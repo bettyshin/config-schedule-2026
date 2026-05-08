@@ -659,15 +659,20 @@ body {
   .ks-speaker { display: none; }
 
   /* ── Modal: bottom sheet ── */
-  .modal-overlay { align-items: flex-end; padding: 0; }
+  .modal-overlay {
+    align-items: flex-end;
+    padding: 0;
+    z-index: 200; /* above mobile nav (z-index: 100) */
+    padding-bottom: calc(56px + env(safe-area-inset-bottom, 0));
+  }
   .modal-card {
     border-radius: var(--radius-xl) var(--radius-xl) 0 0;
     max-width: 100%;
-    max-height: 90dvh;
+    max-height: calc(90dvh - 56px - env(safe-area-inset-bottom, 0px));
     width: 100%;
     animation: sheetIn var(--timing-md) ease;
   }
-  .modal-scroll { padding: 16px 18px max(40px, env(safe-area-inset-bottom, 20px)) 18px; }
+  .modal-scroll { padding: 16px 18px max(24px, env(safe-area-inset-bottom, 16px)) 18px; }
   .modal-title { font-size: 17px; }
   .modal-desc { font-size: 13px; line-height: 1.65; }
 

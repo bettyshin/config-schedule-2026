@@ -2394,7 +2394,7 @@ function renderCalDay(dayLabel) {
   const daySessions = mySchedule.filter(s => s.dayLabel === dayLabel);
 
   if (mySchedule.length === 0) {
-    body.innerHTML = `<div class="cal-empty">📋 No sessions saved yet.<br><span style="font-size:11px">Click any session on the schedule,<br>then "Add to My Schedule."</span></div>`;
+    body.innerHTML = `<div class="cal-empty">📋 No sessions saved yet.<br><span style="font-size:11px">Click any session on the Agenda,<br>then "Add to My Schedule."</span></div>`;
     if (alertsEl) { alertsEl.textContent = ''; alertsEl.classList.remove('visible'); }
     return;
   }

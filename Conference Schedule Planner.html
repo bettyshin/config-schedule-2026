@@ -1,0 +1,3603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Config 2026 — Schedule</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* PPEditorialNew-Ultralight via CDN-like embed (fallback to Georgia for editorial serif) */
+@font-face {
+  font-family: 'PPEditorialNew';
+  font-weight: 200;
+  font-style: normal;
+  src: local('PPEditorialNew-Ultralight'), local('PP Editorial New Ultralight');
+}
+
+:root {
+  /* New color palette: deep navy, warm cream, amber accent */
+  --orange:        #d4622a;        /* burnt orange accent */
+  --beige-10:  #faf8f4;
+  --beige-20:  #f4f0e8;
+  --beige-40:  #ece5d6;
+  --beige-60:  #e0d7c4;
+  --beige-80:  #d3c9af;
+  --beige-100: #c4b89a;
+  --black:         #1a1814;        /* warm near-black */
+  --gray-5:        #5c5750;        /* warm mid-gray */
+  --gray-4:        #a09890;
+  --gray-3:        #c8c0b6;
+  --gray-2:        #dfd8ce;
+  --gray-1:        #f0ece6;
+  --white:         #fdfaf6;        /* warm off-white */
+  --sidebar-bg:       #1a1814;        /* dark sidebar */
+  --sidebar-text:     #e8e2d8;
+  --sidebar-muted:    #7a7268;
+  --sidebar-accent:   #d4622a;
+  --sidebar-hover:    #252219;
+  --sidebar-active:   #2e2b24;
+  --sidebar-border:   #2e2b24;
+  --sidebar-width:    220px;
+  --font-primary: 'PPEditorialNew', 'Georgia', 'Times New Roman', serif;
+  --font-secondary: 'Roboto Mono', 'Courier New', monospace;
+  --radius-xs:  4px;
+  --radius-sm:  8px;
+  --radius-md:  12px;
+  --radius-lg:  16px;
+  --radius-xl:  24px;
+  --shadow-xs:  0 1px 4px 0 rgba(26,24,20,0.14);
+  --shadow-sm:  0 2px 10px 0 rgba(26,24,20,0.09);
+  --shadow-modal: 0 32px 80px rgba(26,24,20,0.28);
+  --timing-sm:  150ms;
+  --timing-md:  250ms;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-secondary);
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 1.5;
+  letter-spacing: 0.2px;
+  color: var(--black);
+  background: var(--beige-20);
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ─── SIDEBAR LAYOUT ─────────────────────────────────── */
+.app-sidebar {
+  width: var(--sidebar-width);
+  min-width: var(--sidebar-width);
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  background: var(--sidebar-bg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-right: 1px solid var(--sidebar-border);
+}
+
+.sidebar-brand {
+  padding: 28px 20px 22px;
+  border-bottom: 1px solid var(--sidebar-border);
+  flex-shrink: 0;
+}
+
+.sidebar-config-title {
+  font-family: var(--font-primary);
+  font-weight: 200;
+  font-size: 32px;
+  letter-spacing: -0.5px;
+  color: var(--sidebar-text);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.sidebar-config-title em {
+  font-style: italic;
+  color: var(--sidebar-accent);
+}
+
+.sidebar-location {
+  font-family: var(--font-secondary);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.8px;
+  color: var(--sidebar-muted);
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.sidebar-dates {
+  font-family: var(--font-secondary);
+  font-weight: 400;
+  font-size: 10px;
+  color: var(--sidebar-text);
+  opacity: 0.7;
+  letter-spacing: 0.3px;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 18px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar-nav-label {
+  font-family: var(--font-secondary);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--sidebar-muted);
+  padding: 0 8px;
+  margin-bottom: 6px;
+  margin-top: 4px;
+}
+
+.sidebar-nav-btn {
+  font-family: var(--font-primary);
+  font-weight: 200;
+  font-size: 16px;
+  letter-spacing: 0.1px;
+  color: var(--sidebar-text);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  text-align: left;
+  transition: all var(--timing-sm) ease;
+  opacity: 0.75;
+}
+
+.sidebar-nav-btn:hover {
+  background: var(--sidebar-hover);
+  border-color: var(--sidebar-border);
+  opacity: 1;
+  color: var(--sidebar-text);
+}
+
+.sidebar-nav-btn.active {
+  background: var(--sidebar-active);
+  border-color: var(--sidebar-accent);
+  color: var(--white);
+  opacity: 1;
+}
+
+.sidebar-nav-btn svg {
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.sidebar-nav-btn.active svg { opacity: 1; }
+
+.sidebar-badge {
+  background: var(--sidebar-accent);
+  color: var(--white);
+  font-family: var(--font-secondary);
+  font-size: 9px;
+  font-weight: 500;
+  padding: 1px 6px;
+  border-radius: 20px;
+  min-width: 18px;
+  text-align: center;
+  line-height: 1.6;
+  display: none;
+  margin-left: auto;
+}
+
+.sidebar-badge.visible { display: inline-block; }
+
+.sidebar-footer {
+  padding: 16px 20px;
+  border-top: 1px solid var(--sidebar-border);
+  flex-shrink: 0;
+}
+
+.sidebar-hint {
+  font-family: var(--font-secondary);
+  font-weight: 400;
+  font-size: 10px;
+  color: var(--sidebar-muted);
+  line-height: 1.7;
+  letter-spacing: 0.2px;
+}
+
+/* ─── MAIN CONTENT AREA ──────────────────────────────── */
+/* Monospace for secondary text elements */
+.config-meta,
+.header-date,
+.time-tick,
+.legend-item,
+.legend-label,
+.filter-label,
+.filter-match-count,
+.s-type,
+.s-speaker,
+.ks-tag,
+.ks-speaker,
+.th-room,
+.modal-pill,
+.modal-meta,
+.modal-section-label,
+.modal-speaker-role,
+.compare-code-label,
+.compare-code-box,
+.compare-input,
+.compare-day-label,
+.compare-block-time,
+.compare-time-tick,
+.cal-time-tick,
+.cal-session-time,
+.rec-pick-time,
+.rec-option-time,
+.rec-item-time,
+.planner-hint,
+.topic-chip,
+.day-tab,
+.rec-tab,
+.cal-day-tab,
+.sp-action-btn,
+.compare-section-title,
+.compare-col-you,
+.compare-col-them,
+.rec-interest-chip {
+  font-family: var(--font-secondary) !important;
+  font-weight: 400 !important;
+}
+
+/* ─── HEADER ────────────────────────────────────────────── */
+.site-header { display: none; }
+.config-wordmark { display: flex; align-items: baseline; gap: 10px; }
+.config-title { font-family: var(--font-secondary); font-weight: 400; font-size: 22px; letter-spacing: -0.3px; color: var(--black); line-height: 1; }
+.config-title em { font-style: italic; color: var(--orange); }
+.config-divider { width: 1px; height: 16px; background: var(--gray-3); flex-shrink: 0; }
+.config-meta { font-family: var(--font-secondary); font-size: 11px; font-weight: 400; letter-spacing: 0.5px; color: var(--gray-5); text-transform: uppercase; }
+.header-date { font-family: var(--font-secondary); font-size: 12px; color: var(--gray-5); letter-spacing: 0.3px; text-align: right; line-height: 1.6; }
+
+/* ─── DAY TABS ──────────────────────────────────────────── */
+.day-tabs {
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-3);
+  padding: 12px 32px;
+  display: flex;
+  gap: 6px;
+}
+.day-tab {
+  font-family: var(--font-secondary);
+  font-weight: 400;
+  background: transparent;
+  border: 1px solid var(--gray-3);
+  color: var(--gray-5);
+  padding: 7px 20px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.4px;
+  transition: all var(--timing-sm) ease;
+}
+.day-tab:hover { color: var(--orange); border-color: var(--orange); background: var(--beige-20); }
+.day-tab.active { background: var(--orange); color: var(--white); border-color: var(--orange); font-weight: 500; }
+
+/* ─── LEGEND ────────────────────────────────────────────── */
+.legend {
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-2);
+  padding: 9px 32px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  align-items: center;
+}
+.legend-label { font-size: 10px; font-weight: 500; color: var(--gray-4); text-transform: uppercase; letter-spacing: 1px; }
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--gray-5); letter-spacing: 0.3px; }
+.legend-swatch { width: 10px; height: 10px; border-radius: var(--radius-xs); flex-shrink: 0; }
+
+/* ─── SCHEDULE CONTAINER ────────────────────────────────── */
+.schedule-outer {
+  overflow: auto;
+  background: var(--white);
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y;
+}
+.schedule-day { display: none; }
+.schedule-day.active { display: block; }
+.schedule-inner { min-width: max-content; display: flex; flex-direction: column; }
+
+/* ─── STICKY ROOM HEADER ────────────────────────────────── */
+.rooms-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-2);
+  box-shadow: var(--shadow-sm);
+}
+.th-corner {
+  width: 66px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--gray-2);
+  position: sticky;
+  left: 0;
+  z-index: 30;
+  background: var(--white);
+}
+.th-room {
+  flex: 1;
+  min-width: 200px;
+  padding: 10px 12px 8px;
+  font-size: 9px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-right: 1px solid var(--gray-2);
+  border-bottom: 2px solid;
+}
+
+/* ─── GRID BODY ─────────────────────────────────────────── */
+.grid-body { display: flex; }
+.time-col {
+  width: 66px;
+  flex-shrink: 0;
+  position: sticky;
+  left: 0;
+  z-index: 10;
+  background: var(--beige-20);
+  border-right: 1px solid var(--gray-2);
+}
+.time-tick {
+  position: absolute;
+  right: 8px;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  color: var(--gray-4);
+  transform: translateY(-50%);
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+.time-tick.major { color: var(--gray-5); }
+
+/* ─── ROOM TRACKS ───────────────────────────────────────── */
+.track {
+  flex: 1;
+  min-width: 200px;
+  position: relative;
+  border-right: 1px solid var(--gray-2);
+  background: var(--white);
+}
+.hour-line { position: absolute; left: 0; right: 0; border-top: 1px solid var(--gray-2); pointer-events: none; z-index: 1; }
+.half-line { position: absolute; left: 0; right: 0; border-top: 1px dashed var(--gray-1); pointer-events: none; z-index: 1; }
+
+/* ─── SESSION CARDS ─────────────────────────────────────── */
+.session, .keynote-span {
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border-left: 3px solid;
+  z-index: 2;
+  box-shadow: var(--shadow-xs);
+  cursor: pointer;
+  transition: box-shadow var(--timing-sm) ease, transform var(--timing-sm) ease;
+}
+.session { padding: 5px 8px; }
+.keynote-span { padding: 10px 12px; }
+.session:hover, .keynote-span:hover {
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+  z-index: 5;
+}
+
+.s-type {
+  font-size: 8px; font-weight: 500; text-transform: uppercase;
+  letter-spacing: 0.8px; margin-bottom: 2px; white-space: nowrap; overflow: hidden;
+}
+.s-title {
+  font-family: var(--font-secondary);
+  font-weight: 400;
+  font-size: 12px; line-height: 1.35;
+  text-transform: uppercase; letter-spacing: 0.4px;
+  color: var(--black); overflow: hidden;
+  display: -webkit-box; -webkit-box-orient: vertical;
+}
+.s-speaker { font-size: 9px; color: var(--gray-5); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: 0.2px; }
+.ks-tag { font-size: 8px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+.ks-title { font-family: var(--font-secondary); font-weight: 400; font-size: 12px; line-height: 1.35; text-transform: uppercase; letter-spacing: 0.4px; color: var(--black); margin-bottom: 3px; }
+.ks-speaker { font-size: 10px; color: var(--gray-5); letter-spacing: 0.2px; }
+
+/* ─── MODAL ─────────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(44, 44, 44, 0.45);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.modal-overlay.open {
+  display: flex;
+  animation: overlayIn var(--timing-md) ease;
+}
+.modal-card {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  width: 100%;
+  max-width: 500px;
+  max-height: 88vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  box-shadow: var(--shadow-modal);
+  animation: cardIn var(--timing-md) ease;
+}
+.modal-accent { width: 4px; flex-shrink: 0; align-self: stretch; }
+.modal-scroll { overflow-y: auto; flex: 1; padding: 24px 28px 28px; }
+.modal-scroll::-webkit-scrollbar { width: 4px; }
+.modal-scroll::-webkit-scrollbar-track { background: transparent; }
+.modal-scroll::-webkit-scrollbar-thumb { background: var(--gray-3); border-radius: 2px; }
+
+.modal-top-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.modal-pills { display: flex; flex-wrap: wrap; gap: 5px; flex: 1; }
+.modal-pill {
+  font-size: 9px; font-weight: 500; letter-spacing: 0.8px;
+  text-transform: uppercase; padding: 3px 9px; border-radius: 20px; border: 1px solid;
+}
+.modal-pill-topic { border-color: var(--gray-3); color: var(--gray-5); background: var(--gray-1); }
+
+.modal-close {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--gray-1); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  color: var(--gray-5); font-size: 14px; line-height: 1;
+  transition: background var(--timing-sm) ease, color var(--timing-sm) ease;
+}
+.modal-close:hover { background: var(--gray-2); color: var(--black); }
+
+.modal-title {
+  font-family: var(--font-secondary);
+  font-weight: 400;
+  font-size: 21px; line-height: 1.3;
+  text-transform: uppercase; letter-spacing: 0.4px; color: var(--black); margin-bottom: 5px;
+}
+.modal-subtitle { font-size: 13px; color: var(--gray-5); margin-bottom: 12px; line-height: 1.5; }
+
+.modal-meta {
+  display: flex; gap: 6px; align-items: center; flex-wrap: wrap;
+  font-size: 11px; color: var(--gray-5); letter-spacing: 0.3px;
+}
+.modal-meta-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--gray-4); flex-shrink: 0; }
+
+.modal-divider { height: 1px; background: var(--gray-2); margin: 18px 0; }
+
+.modal-section-label {
+  font-size: 9px; font-weight: 500; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--gray-4); margin-bottom: 10px;
+}
+.modal-speaker-item { display: flex; flex-direction: column; gap: 1px; margin-bottom: 10px; }
+.modal-speaker-item:last-child { margin-bottom: 0; }
+.modal-speaker-name { font-family: var(--font-secondary); font-weight: 400; font-size: 17px; color: var(--black); }
+.modal-speaker-role { font-size: 12px; color: var(--gray-5); }
+
+.modal-desc { font-family: var(--font-secondary); font-weight: 400; font-size: 13.5px; line-height: 1.7; color: var(--black); margin-top: 12px; margin-bottom: 16px; }
+.modal-cta {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  flex: 1;
+  text-align: center;
+  background: var(--orange); color: var(--white);
+  text-decoration: none; padding: 13px 24px;
+  border-radius: var(--radius-md);
+  font-size: 12px; font-weight: 500; letter-spacing: 0.6px; text-transform: uppercase;
+  transition: transform var(--timing-sm) ease, opacity var(--timing-sm) ease;
+}
+.modal-cta:hover { opacity: 0.9; transform: scale(0.99); }
+.modal-cta svg { flex-shrink: 0; }
+
+@keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes cardIn { from { transform: translateY(14px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes sheetIn { from { transform: translateY(50px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* ─── SCROLLBAR ─────────────────────────────────────────── */
+.schedule-outer::-webkit-scrollbar { width: 6px; height: 6px; }
+.schedule-outer::-webkit-scrollbar-track { background: var(--beige-40); }
+.schedule-outer::-webkit-scrollbar-thumb { background: var(--beige-100); border-radius: 3px; }
+.schedule-outer::-webkit-scrollbar-thumb:hover { background: var(--gray-4); }
+
+/* ─── MOBILE BOTTOM NAV ─────────────────────────────── */
+.mobile-nav { display: none; }
+
+@media (max-width: 768px) {
+  .mobile-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: var(--sidebar-bg);
+    border-top: 1px solid var(--sidebar-border);
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+  .mobile-nav-btn {
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 10px 4px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--sidebar-muted);
+    font-family: var(--font-secondary);
+    font-size: 9px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: color var(--timing-sm) ease;
+  }
+  .mobile-nav-btn svg { opacity: 0.6; transition: opacity var(--timing-sm) ease; }
+  .mobile-nav-btn.active { color: var(--sidebar-accent); }
+  .mobile-nav-btn.active svg { opacity: 1; }
+  .mobile-nav-badge {
+    position: absolute;
+    top: 6px;
+    right: calc(50% - 18px);
+    background: var(--sidebar-accent);
+    color: var(--white);
+    font-size: 8px;
+    font-weight: 500;
+    padding: 1px 5px;
+    border-radius: 20px;
+    min-width: 16px;
+    text-align: center;
+    line-height: 1.6;
+    display: none;
+  }
+  .mobile-nav-badge.visible { display: inline-block; }
+}
+
+@media (max-width: 768px) {
+  body { display: block; }
+  .app-sidebar { display: none !important; width: 0 !important; min-width: 0 !important; position: static !important; }
+  .app-main { margin-left: 0 !important; padding-left: 0 !important; width: 100% !important; padding-bottom: calc(56px + env(safe-area-inset-bottom, 0)); }
+
+  /* ── Header: restore for mobile ── */
+  .site-header {
+    background: var(--sidebar-bg);
+    border-bottom: 1px solid var(--sidebar-border);
+    padding: 11px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .config-title { font-family: var(--font-primary); font-weight: 200; font-size: 22px; letter-spacing: -0.5px; color: var(--sidebar-text); line-height: 1; }
+  .config-title em { color: var(--sidebar-accent); }
+  .config-meta { display: none; }
+  .config-divider { display: none; }
+  .header-date { font-size: 10px; color: var(--sidebar-muted); }
+  .screen-header { padding: 11px 14px; border-bottom: 1px solid var(--sidebar-border); }
+
+  /* ── Planner bar: restore for mobile ── */
+  .planner-bar {
+    background: var(--beige-60);
+    border-bottom: 1px solid var(--beige-100);
+    padding: 7px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .planner-hint { display: none; }
+  .planner-btn { padding: 8px 12px; font-size: 12px; }
+  .planner-btn-label { display: none; }
+  .planner-btn svg { width: 15px; height: 15px; }
+
+  /* ── Day tabs ── */
+  .day-tabs { padding: 0 12px; gap: 4px; overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .day-tabs::-webkit-scrollbar { display: none; }
+  .day-tab { padding: 8px 14px; font-size: 11px; white-space: nowrap; flex-shrink: 0; border-radius: 0; border: none; border-bottom: 2px solid transparent; background: transparent; color: var(--gray-5); }
+  .day-tab.active { background: transparent; color: var(--orange); border-bottom-color: var(--orange); border-radius: 0; }
+  .day-tab:hover { background: var(--beige-20); }
+
+  /* ── Legend ── collapsed by default ── */
+  .legend { display: none; padding: 8px 12px; gap: 10px; }
+  .legend.mobile-open { display: flex; }
+
+  /* ── Filters bar ── */
+  .filters-bar { padding: 7px 12px; gap: 5px; }
+  .filter-label { display: block; }
+
+  /* ── Schedule outer ── */
+  .content-split { height: calc(100dvh - var(--mob-header-h, 165px)); }
+  .schedule-outer { height: 100% !important; }
+
+  /* ── Main grid: narrower tracks for horizontal scroll ── */
+  .th-room { min-width: 120px; font-size: 8px; padding: 7px 7px 5px; }
+  .track { min-width: 120px; }
+  .th-corner { width: 46px; }
+  .time-col { width: 46px; }
+  .time-tick { font-size: 8px; right: 4px; letter-spacing: 0.2px; }
+  .s-title { font-size: 11px; }
+  .s-type { font-size: 7px; }
+  .s-speaker { display: none; }
+  .ks-title { font-size: 11px; }
+  .ks-speaker { display: none; }
+
+  /* ── Modal: bottom sheet ── */
+  .modal-overlay { align-items: flex-end; padding: 0; }
+  .modal-card {
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-width: 100%;
+    max-height: 90dvh;
+    width: 100%;
+    animation: sheetIn var(--timing-md) ease;
+  }
+  .modal-scroll { padding: 16px 18px max(40px, env(safe-area-inset-bottom, 20px)) 18px; }
+  .modal-title { font-size: 17px; }
+  .modal-desc { font-size: 13px; line-height: 1.65; }
+
+  /* ── Side panels: full-width bottom sheet on mobile ── */
+  .inline-panel-area {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw !important;
+    height: 88dvh;
+    border-left: none;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    box-shadow: 0 -8px 40px rgba(44,44,44,0.2);
+    z-index: 200;
+    transition: none;
+  }
+  .inline-panel-area:not(.open) {
+    display: none;
+  }
+  .inline-panel-area.open {
+    width: 100vw !important;
+    display: flex;
+  }
+  .side-panel {
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    animation: sheetIn var(--timing-md) ease;
+  }
+  .side-panel-header { padding: 14px 16px 12px; }
+  /* drag handle */
+  .side-panel::before {
+    content: '';
+    display: block;
+    width: 36px; height: 4px;
+    background: var(--gray-3);
+    border-radius: 2px;
+    margin: 10px auto -6px;
+    flex-shrink: 0;
+  }
+  .side-panel-body { padding: 12px 16px max(32px, env(safe-area-inset-bottom, 16px)) 16px; }
+
+  /* ── Calendar view in My Schedule panel ── */
+  .cal-day-nav { padding: 10px 12px 0; }
+  .cal-session-title { font-size: 11px; }
+  .cal-session-time { font-size: 9px; }
+
+  /* ── Rec panel tweaks ── */
+  .rec-tabs { margin-bottom: 10px; }
+  .rec-pick-list { max-height: calc(88dvh - 280px); }
+
+  /* ── Compare panel ── */
+  .compare-input-row { flex-direction: column; }
+  .compare-load-btn { width: 100%; }
+  .compare-block-title { font-size: 11px; }
+}
+.filters-bar {
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-2);
+  padding: 10px 32px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.filter-bar-top {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.filter-label {
+  font-family: var(--font-secondary);
+  font-size: 9px; font-weight: 500; color: var(--gray-4);
+  text-transform: uppercase; letter-spacing: 1.2px; flex-shrink: 0;
+}
+.filter-desc {
+  font-family: var(--font-secondary);
+  font-weight: 400;
+  font-size: 11px; color: var(--gray-5); letter-spacing: 0.2px;
+}
+.topic-chips { display: flex; flex-wrap: wrap; gap: 5px; flex: 1; }
+.topic-chip {
+  font-family: inherit;
+  font-size: 11px; font-weight: 400; letter-spacing: 0.3px;
+  padding: 4px 12px; border-radius: var(--radius-sm);
+  border: 1px solid var(--gray-3);
+  background: transparent; color: var(--gray-5);
+  cursor: pointer; transition: all var(--timing-sm) ease;
+  white-space: nowrap; line-height: 1.5;
+}
+.topic-chip:hover { border-color: var(--orange); color: var(--orange); background: var(--beige-20); }
+.topic-chip.active { background: var(--orange); color: var(--white); border-color: var(--orange); font-weight: 500; }
+.filter-clear {
+  font-family: inherit; font-size: 11px; color: var(--orange);
+  background: none; border: none; cursor: pointer; padding: 4px 8px;
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--timing-sm);
+  flex-shrink: 0; letter-spacing: 0.2px;
+}
+.filter-clear.visible { opacity: 1; pointer-events: all; }
+.filter-match-count {
+  font-size: 10px; color: var(--gray-5); letter-spacing: 0.3px;
+  flex-shrink: 0; white-space: nowrap;
+}
+.session.filtered-out, .keynote-span.filtered-out {
+  opacity: 0.12;
+  pointer-events: none;
+  transition: opacity var(--timing-md) ease;
+}
+
+/* ─── PLANNER BAR ────────────────────────────────────── */
+.planner-bar { display: none; }
+.planner-bar-left { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.planner-btn {
+  font-family: var(--font-secondary);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--beige-100);
+  background: var(--white);
+  color: var(--black);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all var(--timing-sm) ease;
+}
+.planner-btn:hover { border-color: var(--orange); color: var(--orange); }
+.planner-btn.active { background: var(--orange); color: var(--white); border-color: var(--orange); }
+.planner-btn-primary { font-weight: 500; background: var(--black); color: var(--white); border-color: var(--black); }
+.planner-btn-primary:hover { background: var(--orange); border-color: var(--orange); color: var(--white); }
+.planner-badge {
+  background: var(--orange);
+  color: var(--white);
+  font-size: 9px;
+  font-weight: 600;
+  padding: 1px 5px;
+  border-radius: 20px;
+  min-width: 16px;
+  text-align: center;
+  line-height: 1.5;
+  display: none;
+}
+.planner-badge.visible { display: inline-block; }
+.planner-hint { font-size: 10px; color: var(--gray-5); letter-spacing: 0.3px; }
+
+/* ─── SCREEN-BASED LAYOUT ────────────────────────────── */
+.app-main {
+  padding-left: var(--sidebar-width);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.app-screen {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+}
+.app-screen.active {
+  display: flex;
+}
+
+/* Screen header (for My Schedule / Compare / Recommend) */
+.screen-header {
+  padding: 20px 32px 16px;
+  border-bottom: 1px solid var(--sidebar-border);
+  background: var(--sidebar-bg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.screen-title {
+  font-family: var(--font-primary);
+  font-weight: 200;
+  font-size: 22px;
+  letter-spacing: -0.3px;
+  color: var(--sidebar-text);
+}
+.screen-actions { display: flex; align-items: center; gap: 8px; }
+
+/* Scrollable body for Compare / Recommend screens */
+.screen-body {
+  overflow-y: auto;
+  flex: 1;
+  padding: 24px 32px 40px;
+}
+
+/* My Schedule screen — special layout with day nav + scrollable cal */
+#screenMySchedule .cal-day-nav {
+  border-bottom: 1px solid var(--gray-2);
+  background: var(--white);
+  flex-shrink: 0;
+}
+#screenMySchedule .cal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 32px 24px;
+}
+#screenMySchedule .cal-alerts {
+  flex-shrink: 0;
+}
+#screenMySchedule .cal-legend {
+  flex-shrink: 0;
+  padding: 8px 32px;
+}
+
+/* Schedule outer for Agenda screen */
+#screenAgenda .schedule-outer {
+  flex: 1;
+  overflow: auto;
+  background: var(--beige-20);
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y;
+}
+
+/* Hide old layout elements */
+.content-split, .inline-panel-area, .side-panel,
+.panel-backdrop, .planner-bar { display: none !important; }
+.side-panel-header {
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--gray-2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.side-panel-title { font-size: 15px; font-weight: 500; letter-spacing: -0.1px; }
+.side-panel-actions { display: flex; align-items: center; gap: 8px; }
+.sp-close-btn {
+  font-family: inherit; font-size: 13px; color: var(--gray-5);
+  background: var(--gray-1); border: none; cursor: pointer;
+  width: 26px; height: 26px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--timing-sm);
+}
+.sp-close-btn:hover { background: var(--gray-2); color: var(--black); }
+.sp-action-btn {
+  font-family: inherit; font-size: 11px; color: var(--gray-5);
+  background: var(--gray-1); border: none; cursor: pointer;
+  padding: 4px 10px; border-radius: var(--radius-sm);
+  display: flex; align-items: center; gap: 5px;
+  transition: all var(--timing-sm);
+}
+.sp-action-btn:hover { background: var(--beige-80); color: var(--black); }
+.side-panel-body { overflow-y: auto; flex: 1; padding: 16px 20px 24px; }
+
+/* ─── MY SCHEDULE CALENDAR ───────────────────────────── */
+.cal-day-nav {
+  display: flex; gap: 4px; padding: 12px 16px 0;
+  border-bottom: 1px solid var(--gray-2);
+  background: var(--white); flex-shrink: 0;
+}
+.cal-day-tab {
+  font-family: inherit; font-size: 11px; font-weight: 400;
+  padding: 6px 14px; border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  border: 1px solid transparent; border-bottom: none;
+  background: transparent; color: var(--gray-5);
+  cursor: pointer; transition: all var(--timing-sm);
+  position: relative; bottom: -1px;
+}
+.cal-day-tab:hover { color: var(--black); background: var(--beige-20); }
+.cal-day-tab.active {
+  background: var(--white); color: var(--black); font-weight: 500;
+  border-color: var(--gray-2);
+}
+.cal-body { flex: 1; overflow-y: auto; padding: 0; position: relative; }
+.cal-grid {
+  display: flex; position: relative;
+  min-height: 400px;
+}
+.cal-time-col {
+  width: 48px; flex-shrink: 0;
+  background: var(--beige-20);
+  border-right: 1px solid var(--gray-2);
+  position: relative;
+}
+.cal-time-tick {
+  position: absolute; right: 6px;
+  font-size: 8px; font-weight: 500; letter-spacing: 0.4px;
+  color: var(--gray-4); transform: translateY(-50%);
+  white-space: nowrap; text-transform: uppercase;
+}
+.cal-lane {
+  flex: 1; position: relative;
+  background: var(--white);
+}
+.cal-half-lines { position: absolute; inset: 0; pointer-events: none; }
+.cal-session {
+  position: absolute; left: 5px; right: 5px;
+  border-radius: var(--radius-xs);
+  border-left: 3px solid;
+  padding: 3px 6px;
+  cursor: pointer;
+  overflow: hidden;
+  z-index: 2;
+  transition: box-shadow var(--timing-sm), transform var(--timing-sm);
+  box-shadow: var(--shadow-xs);
+}
+.cal-session:hover { box-shadow: var(--shadow-sm); transform: translateX(1px); z-index: 5; }
+.cal-session.cal-conflict { box-shadow: 0 0 0 2px var(--orange); }
+.cal-session.cal-buffer { box-shadow: 0 0 0 2px #e6a800; }
+.cal-session-time { font-size: 10px; font-weight: 500; letter-spacing: 0.3px; color: var(--gray-5); line-height: 1.2; white-space: nowrap; overflow: hidden; }
+.cal-session-title { font-size: 12px; font-weight: 400; line-height: 1.3; color: var(--black); text-transform: uppercase; letter-spacing: 0.4px; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+.cal-session-remove {
+  position: absolute; top: 3px; right: 3px;
+  font-size: 11px; background: rgba(255,255,255,0.9);
+  border: none; border-radius: 4px; cursor: pointer; padding: 2px 5px;
+  color: var(--gray-5); opacity: 0; line-height: 1;
+  transition: opacity var(--timing-sm), color var(--timing-sm);
+  min-width: 18px; min-height: 18px;
+  display: flex; align-items: center; justify-content: center;
+}
+.cal-session:hover .cal-session-remove { opacity: 1; }
+.cal-session-remove:hover { color: var(--orange); background: white; box-shadow: var(--shadow-xs); }
+.cal-empty {
+  text-align: center; padding: 50px 20px;
+  color: var(--gray-5); font-size: 12px; line-height: 1.8;
+}
+.cal-legend {
+  font-family: var(--font-secondary);
+  font-weight: 400;
+  display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+  padding: 8px 16px; border-top: 1px solid var(--gray-2);
+  background: var(--white); flex-shrink: 0;
+}
+.cal-legend-item {
+  font-family: var(--font-secondary);
+  font-weight: 400;
+  display: flex; align-items: center; gap: 4px;
+  font-size: 9px; color: var(--gray-5); white-space: nowrap;
+}
+.cal-legend-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+.cal-alerts {
+  font-family: var(--font-secondary);
+  font-weight: 400;
+  padding: 8px 16px; background: #fff5f5;
+  border-top: 1px solid #fdd; font-size: 10px; color: var(--orange);
+  line-height: 1.6; flex-shrink: 0; display: none;
+}
+.cal-alerts.visible { display: block; }
+
+/* ─── CONFLICT / BUFFER BADGES (kept for compare panel) ─ */
+.conflict-badge {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 9px; font-weight: 500; letter-spacing: 0.4px;
+  color: var(--orange); background: #feeeed; padding: 2px 7px;
+  border-radius: 20px; margin-top: 4px;
+}
+.buffer-warn {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 9px; color: #9a6500; background: #fff8e1; padding: 2px 7px;
+  border-radius: 20px; margin-top: 4px;
+}
+.empty-state {
+  text-align: center; padding: 40px 20px;
+  color: var(--gray-5); font-size: 12px; line-height: 1.7;
+}
+.empty-state-icon { font-size: 28px; margin-bottom: 10px; }
+
+/* ─── REC TABS ────────────────────────────────────────── */
+.rec-tabs {
+  display: flex; gap: 0; margin-bottom: 14px;
+  border: 1px solid var(--gray-2); border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.rec-tab {
+  flex: 1; font-family: inherit; font-size: 11px; font-weight: 400;
+  padding: 7px 10px; border: none; background: var(--gray-1);
+  color: var(--gray-5); cursor: pointer; transition: all var(--timing-sm);
+  text-align: center; line-height: 1.4;
+}
+.rec-tab:first-child { border-right: 1px solid var(--gray-2); }
+.rec-tab.active { background: #24211a; color: var(--sidebar-text); font-weight: 500; }
+.rec-tab:hover:not(.active) { background: var(--beige-40); color: var(--black); }
+.rec-mode { display: none; }
+.rec-mode.active { display: block; }
+
+/* ─── REC PICK FROM CALENDAR ────────────────────────── */
+.rec-pick-hint { font-family: var(--font-secondary); font-weight: 400; font-size: 11px; color: var(--gray-5); line-height: 1.6; margin-bottom: 10px; }
+.rec-pick-day-tabs { display: flex; gap: 4px; margin-bottom: 10px; }
+.rec-pick-day-tab {
+  font-family: var(--font-secondary); font-size: 12px; font-weight: 400;
+  padding: 4px 10px; border-radius: 20px;
+  border: 1px solid var(--gray-3); background: transparent;
+  color: var(--gray-5); cursor: pointer; transition: all var(--timing-sm);
+}
+.rec-pick-day-tab.active { background: var(--black); color: var(--white); border-color: var(--black); }
+.rec-pick-day-tab:hover:not(.active) { border-color: var(--orange); color: var(--orange); }
+.rec-pick-list { max-height: 550px; overflow-y: auto; margin-bottom: 10px; }
+.rec-pick-item {
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  margin-bottom: 3px;
+  cursor: pointer;
+  transition: background var(--timing-sm), border-color var(--timing-sm);
+  user-select: none;
+  overflow: hidden;
+}
+.rec-pick-item:hover { background: var(--beige-20); border-color: var(--beige-100); }
+.rec-pick-item.selected { background: var(--beige-40); border-color: var(--beige-100); }
+.rec-pick-item.expanded { background: var(--white); border-color: var(--gray-2); box-shadow: var(--shadow-xs); }
+.rec-pick-item.expanded.selected { background: var(--beige-20); border-color: var(--beige-100); }
+
+/* Row shown when collapsed */
+.rec-pick-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 8px;
+}
+.rec-pick-expand-btn {
+  font-size: 9px; color: var(--gray-4);
+  margin-left: auto; flex-shrink: 0;
+  transition: transform var(--timing-sm), color var(--timing-sm);
+  line-height: 1; padding: 2px 4px;
+}
+.rec-pick-item.expanded .rec-pick-expand-btn { transform: rotate(180deg); color: var(--gray-5); }
+
+/* Expanded body */
+.rec-pick-expanded-body {
+  display: none;
+  padding: 0 10px 10px 30px;
+  animation: expandIn 150ms ease;
+}
+@keyframes expandIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+.rec-pick-item.expanded .rec-pick-expanded-body { display: block; }
+.rec-pick-desc {
+  font-family: var(--font-secondary); font-weight: 400;
+  font-size: 11px; line-height: 1.65; color: var(--gray-5);
+  margin-bottom: 8px;
+}
+.rec-pick-add-row {
+  display: flex; align-items: center; gap: 8px;
+}
+.rec-pick-add-btn {
+  font-family: var(--font-secondary); font-size: 11px; font-weight: 400;
+  display: flex; align-items: center; flex-direction: row; gap: 6px;
+  padding: 4px 12px; border-radius: var(--radius-xs);
+  border: 1px solid var(--gray-3); background: var(--white);
+  color: var(--black); cursor: pointer;
+  transition: all var(--timing-sm);
+}
+.rec-pick-add-btn:hover { background: var(--black); color: var(--white); border-color: var(--black); }
+.rec-pick-add-btn.selected { background: var(--orange); color: var(--white); border-color: var(--orange); }
+
+.rec-pick-check {
+  width: 14px; height: 14px; border-radius: 3px;
+  border: 1.5px solid var(--gray-3); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--timing-sm);
+}
+.rec-pick-item.selected .rec-pick-check {
+  background: var(--black); border-color: var(--black);
+}
+.rec-pick-check-inner { width: 6px; height: 6px; border-radius: 1px; background: white; display: none; }
+.rec-pick-item.selected .rec-pick-check-inner { display: block; }
+.rec-pick-info { flex: 1; min-width: 0; }
+.rec-pick-time { font-size: 10px; color: var(--gray-5); letter-spacing: 0.3px; }
+.rec-pick-title { font-size: 12px; color: var(--black); font-weight: 400; line-height: 1.3; text-transform: uppercase; letter-spacing: 0.4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 4px; margin-bottom: 8px; }
+.rec-pick-room { font-family: var(--font-secondary); font-weight: 400; font-size: 10px; margin-top: 1px; }
+.rec-pick-count {
+  font-family: var(--font-secondary); font-weight: 400; font-size: 10px; color: var(--gray-5); margin-bottom: 6px;
+}
+.rec-options-container { margin-top: 4px; }
+.rec-option-card {
+  border: 1px solid var(--gray-2); border-radius: var(--radius-sm);
+  margin-bottom: 10px; overflow: hidden;
+}
+.rec-option-card:first-child { margin-top: 42px; }
+.rec-option-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 10px; background: var(--beige-20);
+  border-bottom: 1px solid var(--gray-2);
+}
+.rec-option-title { font-family: var(--font-secondary); font-weight: 400; font-size: 12px; color: var(--black); }
+.rec-option-meta { font-family: var(--font-secondary); font-weight: 400; font-size: 11px; color: var(--gray-5); }
+.rec-option-save-all {
+  font-family: var(--font-secondary); font-size: 11px; font-weight: 400;
+  text-transform: uppercase;
+  background: var(--black); color: var(--white);
+  border: none; border-radius: var(--radius-xs); padding: 4px 10px;
+  cursor: pointer; transition: background var(--timing-sm);
+}
+.rec-option-save-all:hover { background: var(--orange); }
+.rec-option-body { padding: 8px 10px; }
+.rec-option-session {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 6px; padding: 5px 0; border-bottom: 1px solid var(--gray-1);
+}
+.rec-option-session:last-child { border-bottom: none; }
+.rec-option-time { font-size: 10px; color: var(--gray-5); white-space: nowrap; width: 90px; flex-shrink: 0; padding-top: 1px; }
+.rec-option-text { flex: 1; min-width: 0; }
+.rec-option-name { font-size: 12px; font-weight: 400; color: var(--black); line-height: 1.3; text-transform: uppercase; }
+.rec-option-room { font-family: var(--font-secondary); font-weight: 400; font-size: 10px; margin-top: 1px; }
+.rec-option-warn { font-size: 9px; color: #9a6500; margin-top: 1px; }
+
+/* ─── MODAL ADD BUTTON ───────────────────────────────── */
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+.modal-add-btn {
+  display: flex; align-items: center; justify-content: center; flex-direction: row-reverse; gap: 6px;
+  flex: 1;
+  background: var(--beige-80); color: var(--black);
+  border: 1px solid var(--beige-100);
+  padding: 11px 24px;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 12px; font-weight: 500; letter-spacing: 0.6px; text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--timing-sm) ease;
+}
+.modal-add-btn:hover { background: var(--beige-100); }
+.modal-add-btn.added { background: var(--orange); color: var(--white); border-color: var(--orange); }
+
+/* ─── SESSION CARD: SAVED STATE ─────────────────────── */
+.session.saved, .keynote-span.saved {
+  box-shadow: 0 0 0 2px var(--black), var(--shadow-xs);
+}
+.session.conflict-card, .keynote-span.conflict-card {
+  box-shadow: 0 0 0 2px var(--orange), var(--shadow-xs);
+  outline-offset: 0;
+}
+
+/* ─── COMPARE ────────────────────────────────────────── */
+.compare-code-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.8px; color: var(--gray-5); margin-bottom: 6px; }
+.compare-code-box {
+  font-size: 11px; font-family: monospace;
+  background: var(--gray-1); border: 1px solid var(--gray-2);
+  border-radius: var(--radius-sm); padding: 8px 10px;
+  word-break: break-all; cursor: pointer; color: var(--gray-5);
+  transition: background var(--timing-sm);
+  min-height: 32px;
+}
+.compare-code-box:hover { background: var(--beige-40); }
+.compare-input-row { display: flex; gap: 6px; }
+.compare-input {
+  flex: 1; font-family: monospace; font-size: 11px;
+  border: 1px solid var(--gray-3); border-radius: var(--radius-sm);
+  padding: 7px 10px; color: var(--black);
+  outline: none;
+}
+.compare-input:focus { border-color: var(--orange); }
+.compare-load-btn {
+  font-family: var(--font-secondary); font-size: 12px; font-weight: 400;
+  background: #24211a; color: var(--sidebar-text);
+  border: none; border-radius: var(--radius-sm); padding: 7px 14px;
+  cursor: pointer; transition: background var(--timing-sm);
+}
+.compare-load-btn:hover { background: var(--orange); }
+.compare-your-code { margin-bottom: 0; }
+
+/* ── Compare: day section ── */
+.compare-day-section { margin-bottom: 20px; }
+.compare-day-label {
+  font-family: var(--font-secondary); font-weight: 400;
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--gray-4); margin-bottom: 8px; padding-bottom: 5px;
+  border-bottom: 1px solid var(--gray-2);
+}
+
+/* ── Compare: two-column header ── */
+.compare-col-headers {
+  display: grid; grid-template-columns: 48px 1fr 1fr;
+  gap: 0; margin-bottom: 2px;
+}
+.compare-col-you {
+  font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px;
+  color: var(--orange); padding: 4px 6px; text-align: center;
+  background: #fff5f5; border-radius: var(--radius-xs) var(--radius-xs) 0 0;
+}
+.compare-col-them {
+  font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px;
+  color: #1f7aab; padding: 4px 6px; text-align: center;
+  background: #eaf5fc; border-radius: var(--radius-xs) var(--radius-xs) 0 0;
+}
+
+/* ── Compare: calendar grid ── */
+.compare-cal-grid {
+  display: grid; grid-template-columns: 48px 1fr 1fr;
+  position: relative;
+  border: 1px solid var(--gray-2); border-radius: 0 var(--radius-sm) var(--radius-sm) var(--radius-sm);
+  overflow: hidden; background: var(--white);
+}
+.compare-time-col { position: relative; border-right: 1px solid var(--gray-2); background: var(--beige-20); }
+.compare-lane {
+  position: relative; border-right: 1px solid var(--gray-2);
+}
+.compare-lane:last-child { border-right: none; }
+.compare-hour-line { position: absolute; left: 0; right: 0; border-top: 1px solid var(--gray-2); z-index: 1; pointer-events: none; }
+.compare-half-line { position: absolute; left: 0; right: 0; border-top: 1px dashed var(--gray-1); z-index: 1; pointer-events: none; }
+.compare-time-tick {
+  position: absolute; right: 5px;
+  font-size: 8px; font-weight: 500; letter-spacing: 0.3px;
+  color: var(--gray-4); transform: translateY(-50%);
+  white-space: nowrap; text-transform: uppercase; line-height: 1;
+}
+
+/* ── Compare: session blocks ── */
+.compare-block {
+  position: absolute; left: 3px; right: 3px;
+  border-radius: var(--radius-xs);
+  border-left: 3px solid;
+  padding: 3px 5px; overflow: hidden; z-index: 2;
+  box-shadow: var(--shadow-xs);
+}
+.compare-block.is-shared {
+  box-shadow: 0 0 0 2px var(--orange), var(--shadow-xs);
+}
+.compare-block-time { font-size: 10px; font-weight: 500; line-height: 1.2; white-space: nowrap; overflow: hidden; }
+.compare-block-title { font-size: 12px; font-weight: 400; line-height: 1.3; color: var(--black); text-transform: uppercase; letter-spacing: 0.4px; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; }
+
+/* ── Compare: shared badge ── */
+.compare-shared-badge {
+  font-family: var(--font-secondary); font-weight: 400;
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px;
+  background: var(--orange); color: white;
+  padding: 1px 5px; border-radius: 10px; position: absolute; top: 2px; right: 3px;
+  pointer-events: none; z-index: 3;
+}
+
+/* ── Compare: cover more ground rows ── */
+.compare-split-row {
+  display: flex; gap: 10px; align-items: flex-start;
+  margin-bottom: 8px;
+}
+.compare-split-time {
+  font-family: var(--font-secondary); font-weight: 400;
+  font-size: 10px; font-weight: 600; color: var(--gray-5);
+  letter-spacing: 0.4px; width: 36px;
+  flex-shrink: 0; padding-top: 10px; text-align: right;
+  white-space: normal; word-break: break-word;
+}
+.compare-split-sessions {
+  flex: 1; display: flex; flex-direction: column; gap: 4px;
+}
+.compare-split-session {
+  border-radius: var(--radius-xs); border-left: 3px solid;
+  padding: 6px 8px;
+}
+.compare-split-who-label {
+  font-family: var(--font-secondary); font-weight: 400;
+  font-size: 8px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.5px; margin-bottom: 2px;
+}
+.compare-split-session-title {
+  font-size: 12px; font-weight: 400; color: var(--black); line-height: 1.3;
+  text-transform: uppercase; letter-spacing: 0.4px;
+}
+.compare-split-session-room {
+  font-family: var(--font-secondary); font-weight: 400;
+  font-size: 9px; margin-top: 2px;
+}
+
+/* ── Compare: section label ── */
+.compare-section-title {
+  font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px;
+  color: var(--gray-4); margin: 14px 0 6px;
+}
+
+/* ─── RECOMMENDATIONS ────────────────────────────────── */
+.rec-interest-grid { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+.rec-interest-chip {
+  font-family: inherit; font-size: 11px; padding: 4px 12px;
+  border-radius: var(--radius-sm); border: 1px solid var(--gray-3);
+  background: transparent; color: var(--gray-5);
+  cursor: pointer; transition: all var(--timing-sm);
+}
+.rec-interest-chip:hover { border-color: var(--orange); color: var(--orange); }
+.rec-interest-chip.active { background: var(--orange); color: var(--white); border-color: var(--orange); font-weight: 500; }
+.rec-generate-btn {
+  font-family: var(--font-secondary); font-size: 12px; font-weight: 500;
+  background: #24211a; color: var(--sidebar-text);
+  border: none; border-radius: var(--radius-sm);
+  padding: 9px 18px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  transition: background var(--timing-sm); margin-bottom: 16px;
+}
+.rec-generate-btn:hover { background: var(--orange); }
+.rec-day-section { margin-bottom: 20px; }
+.rec-day-label {
+  font-family: var(--font-secondary); font-weight: 400;
+  font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--gray-4); margin-bottom: 8px;
+}
+.rec-day-section:first-child .rec-day-label { margin-top: 42px; }
+.rec-item {
+  border-radius: var(--radius-sm); padding: 9px 10px 9px 12px;
+  margin-bottom: 6px; border-left: 3px solid;
+  background: var(--gray-1); display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 8px;
+}
+.rec-item-info { flex: 1; min-width: 0; }
+.rec-item-time { font-size: 10px; color: var(--gray-5); letter-spacing: 0.4px; margin-bottom: 2px; }
+.rec-item-title { font-family: var(--font-secondary); font-size: 12px; font-weight: 400; color: var(--black); line-height: 1.35; text-transform: uppercase; letter-spacing: 0.4px; }
+.rec-item-room { font-family: var(--font-secondary); font-weight: 400; font-size: 10px; color: var(--gray-5); margin-top: 1px; }
+.rec-add-btn {
+  font-family: var(--font-secondary); font-size: 10px; font-weight: 400;
+  background: var(--beige-80); color: var(--black);
+  border: 1px solid var(--beige-100);
+  border-radius: var(--radius-xs); padding: 4px 9px;
+  cursor: pointer; white-space: nowrap; flex-shrink: 0;
+  transition: all var(--timing-sm);
+}
+.rec-add-btn:hover { background: var(--black); color: var(--white); border-color: var(--black); }
+.rec-add-btn.added { background: var(--orange); color: var(--white); border-color: var(--orange); }
+.rec-conflict-note { font-size: 10px; color: var(--orange); margin-top: 3px; }
+
+@media (max-width: 768px) {
+
+  /* ── Planner bar: compact ── */
+  .planner-bar { padding: 7px 12px; gap: 6px; }
+  .planner-hint { display: none; }
+  .planner-btn { padding: 8px 12px; font-size: 12px; }
+  .planner-btn-label { display: none; }
+  .planner-btn svg { width: 15px; height: 15px; }
+
+  /* ── Calendar view in My Schedule panel ── */
+  .cal-day-nav { padding: 10px 12px 0; }
+  .cal-session-title { font-size: 11px; }
+  .cal-session-time { font-size: 9px; }
+
+  /* ── Rec panel tweaks ── */
+  .rec-tabs { margin-bottom: 10px; }
+  .rec-pick-list { max-height: calc(88dvh - 280px); }
+
+  /* ── Compare panel ── */
+  .compare-input-row { flex-direction: column; }
+  .compare-load-btn { width: 100%; }
+  .compare-block-title { font-size: 11px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ─── SIDEBAR ──────────────────────────────────────── -->
+<aside class="app-sidebar">
+  <div class="sidebar-brand">
+    <div class="sidebar-config-title">Config <em>2026</em></div>
+    <div class="sidebar-location">San Francisco · Moscone Center</div>
+    <div class="sidebar-dates">June 23–25, 2026</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="sidebar-nav-label">Browse</div>
+    <button class="sidebar-nav-btn active" id="agendaBtn" onclick="showScreen('agenda')">
+      <svg width="14" height="14" viewBox="0 0 13 13" fill="none"><rect x="1" y="2" width="11" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4 1v2M9 1v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M1 5h11" stroke="currentColor" stroke-width="1.3"/></svg>
+      Agenda
+    </button>
+    <div class="sidebar-nav-label" style="margin-top:10px">Planner</div>
+    <button class="sidebar-nav-btn" id="myScheduleBtn" onclick="showScreen('mySchedule')">
+      <svg width="14" height="14" viewBox="0 0 13 13" fill="none"><rect x="1" y="1" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M4 6.5h5M4 4.5h5M4 8.5h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      My Schedule
+      <span class="sidebar-badge" id="myScheduleCount">0</span>
+    </button>
+    <button class="sidebar-nav-btn" id="compareBtn" onclick="showScreen('compare')">
+      <svg width="14" height="14" viewBox="0 0 13 13" fill="none"><circle cx="4" cy="4" r="2.5" stroke="currentColor" stroke-width="1.3"/><circle cx="9" cy="9" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M6.5 4H9a2.5 2.5 0 012.5 2.5v0" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M6.5 9H4A2.5 2.5 0 011.5 6.5v0" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Compare Schedules
+    </button>
+    <button class="sidebar-nav-btn" id="recBtn" onclick="showScreen('recommend')">
+      <svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M6.5 1.5l1.2 2.4 2.7.4-1.95 1.9.46 2.7L6.5 7.6l-2.41 1.3.46-2.7L2.6 4.3l2.7-.4z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M6.5 10v1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Build My Schedule
+    </button>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-hint" id="plannerHint">Click a session to add it to your schedule</div>
+    <div class="sidebar-hint" style="margin-top:8px;letter-spacing:0.8px;">BUILT BY <a href="https://x.com/betty__shin" target="_blank" rel="noopener noreferrer" style="color:var(--sidebar-muted);text-decoration:underline;text-underline-offset:2px;">BETTY SHIN</a></div>
+  </div>
+</aside>
+
+<!-- ─── MAIN ──────────────────────────────────────────── -->
+<div class="app-main">
+
+<!-- ════════════════ SCREEN: AGENDA ════════════════ -->
+<div class="app-screen active" id="screenAgenda">
+
+<header class="site-header">
+  <div class="config-wordmark">
+    <div class="config-title">Config <em>2026</em></div>
+    <div class="config-divider"></div>
+    <div class="config-meta">San Francisco · Moscone Center</div>
+  </div>
+  <div class="header-date">June 23–25, 2026<br><span style="color:var(--sidebar-muted)">Conference Schedule</span><br><span style="color:var(--sidebar-muted);letter-spacing:0.8px;">BUILT BY <a href="https://x.com/betty__shin" target="_blank" rel="noopener noreferrer" style="color:var(--sidebar-muted);text-decoration:underline;text-underline-offset:2px;">BETTY SHIN</a></span></div>
+</header>
+
+<div class="filters-bar" id="filtersBar">
+  <div class="filter-bar-top">
+    <span class="filter-label">Filter Sessions by Topic</span>
+    <span class="filter-match-count" id="filterMatchCount"></span>
+    <button class="filter-clear" id="filterClear" onclick="clearTopicFilters()">✕ Clear</button>
+  </div>
+  <div class="topic-chips" id="topicChips"></div>
+</div>
+
+<nav class="day-tabs" role="tablist">
+  <button class="day-tab" onclick="showDay(0)">June 23 — Pre-Conference</button>
+  <button class="day-tab active" onclick="showDay(1)">June 24 — Day 1</button>
+  <button class="day-tab" onclick="showDay(2)">June 25 — Day 2</button>
+</nav>
+
+<div class="schedule-outer" id="scheduleOuter" role="main"></div>
+
+</div><!-- /#screenAgenda -->
+
+<!-- ════════════════ SCREEN: MY SCHEDULE ════════════════ -->
+<div class="app-screen" id="screenMySchedule">
+  <div class="screen-header">
+    <div class="screen-title">My Schedule</div>
+    <div class="screen-actions">
+      <button class="sp-action-btn" onclick="exportScheduleImage()" id="exportImgBtn">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v7M3 5l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 9v1.5A.5.5 0 001.5 11h9a.5.5 0 00.5-.5V9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Export JPG
+      </button>
+      <button class="sp-action-btn" onclick="exportSchedule()" id="shareCodeBtn">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="1" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M1 4.5V11h6.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Share
+      </button>
+    </div>
+  </div>
+  <div class="cal-day-nav" id="calDayNav"></div>
+  <div class="cal-alerts" id="calAlerts"></div>
+  <div class="cal-body" id="calBody"></div>
+  <div class="cal-legend" id="calLegend">
+    <span style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--gray-4);margin-right:4px">Stages</span>
+    <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#c84239"></span>Main</span>
+    <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#7a4ea0"></span>Mezzanine</span>
+    <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#1f7aab"></span>Level 2</span>
+    <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#4a7030"></span>Maker</span>
+    <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#b06020"></span>Community</span>
+  </div>
+</div><!-- /#screenMySchedule -->
+
+<!-- ════════════════ SCREEN: COMPARE ════════════════ -->
+<div class="app-screen" id="screenCompare">
+  <div class="screen-header">
+    <div class="screen-title">Compare Schedules</div>
+  </div>
+  <div class="screen-body">
+    <p style="font-family:var(--font-secondary);font-weight:400;font-size:12px;color:var(--gray-5);line-height:1.6;margin-bottom:14px">
+      Share your schedule code with a friend/colleague, then paste theirs below to see where you overlap — and where you can split up to cover more ground.
+    </p>
+    <div class="compare-your-code" id="compareYourCode">
+      <div class="compare-code-label">Your shareable code</div>
+      <div class="compare-code-box" id="compareCodeBox" onclick="copyShareCode()">Click to copy</div>
+    </div>
+    <div style="margin:14px 0">
+      <div class="compare-code-label" style="margin-bottom:6px">Paste their code</div>
+      <div class="compare-input-row">
+        <input type="text" id="colleagueCodeInput" class="compare-input" placeholder="e.g. eyJkYXkx…">
+        <button class="compare-load-btn" onclick="loadColleagueSchedule()">Load</button>
+      </div>
+    </div>
+    <div id="compareResults"></div>
+  </div>
+</div><!-- /#screenCompare -->
+
+<!-- ════════════════ SCREEN: RECOMMEND ════════════════ -->
+<div class="app-screen" id="screenRecommend">
+  <div class="screen-header">
+    <div class="screen-title">Build My Schedule</div>
+  </div>
+  <div class="screen-body">
+    <div class="rec-tabs">
+      <button class="rec-tab active" id="recTabTopics" onclick="switchRecTab('topics')">By Topic</button>
+      <button class="rec-tab" id="recTabPick" onclick="switchRecTab('pick')">Pick from Calendar</button>
+    </div>
+    <div class="rec-mode active" id="recModeTopics">
+      <p style="font-family:var(--font-secondary);font-weight:400;font-size:11px;color:var(--gray-5);line-height:1.6;margin-bottom:10px">
+        Select topics and we'll find the best conflict-free sessions with 10+ min buffers.
+      </p>
+      <div class="rec-interest-grid" id="recInterestGrid"></div>
+      <button class="rec-generate-btn" onclick="generateRecommendations()">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.1 2.2 2.4.35-1.75 1.7.41 2.4L6 6.5l-2.16 1.15.41-2.4L2.5 3.55l2.4-.35z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" fill="currentColor" fill-opacity=".15"/></svg>
+        Build My Schedule
+      </button>
+      <div id="recResults"></div>
+    </div>
+    <div class="rec-mode" id="recModePick">
+      <p class="rec-pick-hint">Select sessions you're considering. We'll generate <strong>3 conflict-free arrangements</strong> of your picks.</p>
+      <div class="rec-pick-day-tabs" id="recPickDayTabs"></div>
+      <div class="rec-pick-count" id="recPickCount">0 sessions selected</div>
+      <div class="rec-pick-list" id="recPickList"></div>
+      <button class="rec-generate-btn" onclick="generatePickOptions()">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M6 1l5 5-5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Generate Scheduling Options
+      </button>
+      <div id="recPickResults" class="rec-options-container"></div>
+    </div>
+  </div>
+</div><!-- /#screenRecommend -->
+
+<!-- ─── MODAL ─────────────────────────────────────────── -->
+<div id="modalOverlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle"
+     onclick="if(event.target===this)closeModal()">
+  <div class="modal-card">
+    <div id="modalAccent" class="modal-accent"></div>
+    <div class="modal-scroll">
+      <div class="modal-top-row">
+        <div id="modalPills" class="modal-pills"></div>
+        <button class="modal-close" onclick="closeModal()" aria-label="Close">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+            <path d="M1 1L9 9M9 1L1 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <h2 id="modalTitle" class="modal-title"></h2>
+      <p id="modalSubtitle" class="modal-subtitle" style="display:none"></p>
+
+      <div id="modalMeta" class="modal-meta"></div>
+
+      <div id="modalDesc" class="modal-desc" style="display:none"></div>
+
+      <div class="modal-divider"></div>
+
+      <div id="modalSpeakers">
+        <div class="modal-section-label">Speakers</div>
+        <div id="modalSpeakerList"></div>
+      </div>
+
+      <div class="modal-actions">
+        <button id="modalAddBtn" class="modal-add-btn" onclick="toggleSessionInSchedule()">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Add to My Schedule
+        </button>
+
+        <a id="modalCta" class="modal-cta" href="#" target="_blank" rel="noopener noreferrer">
+          View on Config 2026
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── PANEL BACKDROP (kept for mobile, hidden on desktop) ────────────────────────────────── -->
+<div id="panelBackdrop" class="panel-backdrop" onclick="closeAllPanels()" style="display:none"></div>
+
+<script>
+const SCALE  = 3;
+const DSTART = 9 * 60;
+
+const RC = {
+  'Main stage':      { c: '#c84239', bg: '#fdf2f1', t: '#c84239' },
+  'Mezzanine stage': { c: '#7a4ea0', bg: '#f5eefa', t: '#7a4ea0' },
+  'Level 2 Stage':   { c: '#1f7aab', bg: '#eaf5fc', t: '#1f7aab' },
+  'Maker Stage':     { c: '#4a7030', bg: '#f0f4e4', t: '#4a7030' },
+  'Community Stage': { c: '#b06020', bg: '#fef5e8', t: '#b06020' },
+  'Config Commons':  { c: '#8a7010', bg: '#fefce6', t: '#8a7010' },
+  'Moscone North':   { c: '#5a5a5a', bg: '#f7f7f7', t: '#5a5a5a' },
+};
+
+const SESSION_MAP = {};
+
+function toMin(s) {
+  const m = s.match(/(\d+):(\d+)\s*(AM|PM)/i);
+  if (!m) return 0;
+  let h = +m[1], mn = +m[2];
+  const p = m[3].toUpperCase();
+  if (p === 'PM' && h !== 12) h += 12;
+  if (p === 'AM' && h === 12) h = 0;
+  return h * 60 + mn;
+}
+const pxTop = s => (toMin(s) - DSTART) * SCALE;
+const pxH   = (s, e) => (toMin(e) - toMin(s)) * SCALE;
+
+/* ════════════════════════════════════════════════
+   SESSION DATA  (title · sub · start · end · room
+                  theme · topics · speakers · url)
+════════════════════════════════════════════════ */
+const DAYS = [
+
+  /* ═══ JUNE 23 ═══════════════════════════════ */
+  {
+    label: 'June 23',
+    endTime: '7:30 PM',
+    rooms: ['Moscone North', 'Config Commons'],
+    sessions: [
+      { title: 'Badge pickup',
+        sub: 'Beat the rush! Grab your Config badge at Moscone North between 9:00 AM–7:00 PM. Valid government ID required for all pickups.',
+        start: '9:00 AM', end: '7:00 PM', room: 'Moscone North', theme: 'Event', topics: [],
+        speakers: [],
+        url: 'https://config.figma.com/san-francisco/event/ccc9794a-d870-47e7-a370-8d855270012b/' },
+
+      { title: 'Config Commons',
+        sub: 'Join us right outside of Moscone as we take over the block for a community hangout. Grab your conference badge, pick out your swag, and kick off your Config experience in a relaxed environment designed for meaningful conversations and spontaneous collaboration.',
+        start: '12:00 PM', end: '7:00 PM', room: 'Config Commons', theme: 'Event', topics: [],
+        speakers: [],
+        url: 'https://config.figma.com/san-francisco/event/f0a6d1fb-cb12-4d50-8ac9-daa8c5417654/' },
+    ]
+  },
+
+  /* ═══ JUNE 24 ═══════════════════════════════ */
+  {
+    label: 'June 24',
+    endTime: '5:30 PM',
+    rooms: ['Main stage', 'Level 2 Stage', 'Mezzanine stage', 'Maker Stage', 'Community Stage'],
+    sessions: [
+      /* Main stage */
+      { title: 'Opening keynote — Figma product launch',
+        start: '9:00 AM', end: '10:20 AM', room: 'Main stage', theme: 'Keynote', topics: [],
+        speakers: ['Dylan Field · CEO & Co-founder, Figma'],
+        desc: 'Design and product-building are changing, and so are the roles we play in the process. This means rethinking product development from the ground up—shifting mindsets and methods to make great work. Figma\'s biggest product launch of the year kicks off Config.',
+        url: 'https://config.figma.com/san-francisco/session/829e6ced-3257-4f5c-b675-aa72f4d1f98f/' },
+
+      { title: 'The rules are the art: creating with AI',
+        start: '10:35 AM', end: '10:55 AM', room: 'Main stage', theme: 'Keynote', topics: ['AI', 'Workflows'],
+        speakers: ['Holly Herndon · Artist, Herndon Dryhurst Studio'],
+        desc: 'Holly Herndon has spent the last decade building at the frontier of music and AI, from the albums Platform and PROTO to Holly+, the first artist-controlled voice model, to the data consent tools behind Spawning. This talk covers her approach to making art with AI, what she calls Protocol Art: a process-based practice of designing the rule set that creates the conditions for art to be made. Holly will discuss how the model-making process becomes a site of authorship, and where her studio with Mat Dryhurst is heading next: orchestrating agents while remaining at the conceptual center.',
+        url: 'https://config.figma.com/san-francisco/session/94c665ce-4b37-4127-b49a-425ac25319a2/' },
+
+      { title: 'Figma deep dive',
+        start: '11:15 AM', end: '12:15 PM', room: 'Main stage', theme: 'Deep dive', topics: [],
+        speakers: [],
+        url: 'https://config.figma.com/san-francisco/session/dfa297f9-6486-4a4f-b272-97fe3572349c/' },
+
+      { title: 'Figma deep dive',
+        start: '1:15 PM', end: '2:15 PM', room: 'Main stage', theme: 'Deep dive', topics: [],
+        speakers: [],
+        url: 'https://config.figma.com/san-francisco/session/ad4cd109-a176-429f-8a92-da12d1bd2d42/' },
+
+      { title: 'Closing keynotes', sub: 'To be announced',
+        start: '4:00 PM', end: '5:00 PM', room: 'Main stage', theme: 'Keynote', topics: [],
+        speakers: [],
+        url: 'https://config.figma.com/san-francisco/session/e8ea736f-5159-46d9-bed5-49855d992a91/' },
+
+      /* Level 2 Stage */
+      { title: 'Scooter, screen and duct-tape: a playbook for whatever-it-takes prototyping',
+        start: '11:10 AM', end: '11:30 AM', room: 'Level 2 Stage', theme: 'Process', topics: ['Hardware', 'Prototyping'],
+        speakers: ['Unnikrishnan Manikoth & Harish Kumar · Ather Energy'],
+        desc: 'What if your next great design tool doesn\'t exist yet? At Ather Energy, designers built their own—using Arduinos, iPads, and Figma. This talk unpacks the superpower of "duct-tape prototyping": a mindset of rapid, scrappy experimentation that helps teams validate ideas, influence stakeholders, and build magical real-world experiences faster.',
+        url: 'https://config.figma.com/san-francisco/session/923b7644-6bbb-4260-97a1-446cb2f05daf/' },
+
+      { title: 'Beyond design systems: designing for robots and seniors',
+        start: '11:30 AM', end: '11:50 AM', room: 'Level 2 Stage', theme: 'Process', topics: ['AI', 'Prototyping', 'Research', 'Accessibility'],
+        speakers: ['Anna Oh · Head of Product & Design, Norbert Health'],
+        desc: 'While AI reshapes the world, many who need it most are left behind. At Norbert Health, Anna Oh designs robotic AI that delivers care to seniors with dementia and limited mobility in nursing homes. Using Figma prototypes tested with real patients and nurses, Oh and her team built human systems that help robots listen, respond, and comfort. This talk shares why Norbert Health gave their robot a 3D bear face instead of a sleek design—because design isn\'t about components, it\'s about connection.',
+        url: 'https://config.figma.com/san-francisco/session/979a7614-45e1-43a4-82d6-a0e2ef8cbed8/' },
+
+      { title: 'Figma meets hardware: prototyping for the physical world',
+        start: '11:50 AM', end: '12:10 PM', room: 'Level 2 Stage', theme: 'Process', topics: ['Hardware', 'Prototyping'],
+        speakers: ['Frederik Ueberschär & Sam Thorne · Electrolux'],
+        desc: 'What if Figma\'s canvas could extend into the physical world? At Electrolux, we use Figma to design the next generation of home appliances. This talk shares how we bridged the digital-physical gap by building "Figma Displays" with off-the-shelf electronics to live-stream prototypes onto production-accurate screens. Learn how this new process shrunk our feedback loop from six months to just two minutes, completely revamping our workflow. You\'ll leave inspired to find your own ways to connect the digital canvas to the world around you.',
+        url: 'https://config.figma.com/san-francisco/session/93485c8d-f1b1-45b3-bdca-a24e0c0bd94c/' },
+
+      { title: 'Be the director: how stage craft informs product craft',
+        start: '12:30 PM', end: '12:50 PM', room: 'Level 2 Stage', theme: 'Process', topics: ['Storytelling', 'Product'],
+        speakers: ['Kim Beverett · Product Manager, OpenAI'],
+        desc: 'The screen is the stage, and the user is the audience. In this talk, we\'ll explore how to think like a stage director by making intentional choices, defining the non-negotiables in your script, and finding your product\'s spine. And why the show must go on.',
+        url: 'https://config.figma.com/san-francisco/session/8f2835f5-9701-4834-9237-0621882953fa/' },
+
+      { title: '300GB Story: how to inspire action when data isn\'t enough',
+        start: '12:50 PM', end: '1:10 PM', room: 'Level 2 Stage', theme: 'Process', topics: ['Research', 'Storytelling'],
+        speakers: ['Luke Fiorante · Design Engineer, Harvard University', 'Sirinda Limsong · Product Designer, Harvard University'],
+        desc: 'What if 300 GB of climate data could make you feel something? In this talk, two Harvard Design Engineering students share how they turned overwhelming datasets into Habitat2100, an interactive storytelling experience built in Figma that transforms data into empathy, urgency, and a call to act for our planet\'s future.',
+        url: 'https://config.figma.com/san-francisco/session/5d27f158-dd26-4f34-b7e0-991224db8b7a/' },
+
+      { title: 'The studio that bet on one designer',
+        start: '2:15 PM', end: '2:35 PM', room: 'Level 2 Stage', theme: 'Design systems', topics: ['Dev and code', 'UX'],
+        speakers: ['Frederick Andersen · Founder, EDL'],
+        desc: 'A year ago, EDL made a bet. Not on a tool or a trend, but on a person and a different idea of what a design studio could own. Today, EDL pushes to clients\' Git repos, runs their design systems in code, and sits upstream of their engineering teams. This wasn\'t accidental. It was intentional. This is the full story: the moment the team saw the opportunity, the rituals that made it real, the metrics that proved it worked, and what it means for any design leader wondering if their team could do the same.',
+        url: 'https://config.figma.com/san-francisco/session/9d0af264-b7d0-4442-be81-26aef7ea89ca/' },
+
+      { title: 'The metacognitive design loop',
+        start: '2:35 PM', end: '2:55 PM', room: 'Level 2 Stage', theme: 'Design systems', topics: ['Dev and code', 'AI'],
+        speakers: ['Jenny Au · Team Lead, Senior UX Developer, Epsilon/Publicis Groupe', 'Mike Green · Team Lead, Product Design, Epsilon/Publicis Groupe'],
+        desc: 'Learn how Epsilon\'s Product Design Team transformed front-end development by combining Figma\'s Code Connect and MCP with generative AI layout creation. Using their CORE UI components, the team has revolutionized product delivery and achieved unprecedented development velocity—moving from design to production faster than ever before.',
+        url: 'https://config.figma.com/san-francisco/session/6c44950a-077d-47bf-bad1-8cc71f995957/' },
+
+      { title: 'Your best practices are trapped in your head—and your AI has no idea',
+        start: '2:55 PM', end: '3:15 PM', room: 'Level 2 Stage', theme: 'Process', topics: ['AI', 'Workflows'],
+        speakers: ['Harald Kirschner · Principal Product Manager, Microsoft'],
+        desc: 'Your tone of voice, your component principles, your definition of "done"—this is the taste you\'ve built over years. Right now it lives in your head, in scattered docs, or in places your tools can\'t see. Every AI session starts from scratch because that context is invisible. This talk shows how to connect those dots: building a shared knowledge layer so AI can help with specs, prototypes, and design systems—without you repeating yourself every time.',
+        url: 'https://config.figma.com/san-francisco/session/dbf85ddc-ab1f-41cf-8b33-e488f14b55a7/' },
+
+      /* Mezzanine stage */
+      { title: 'Ready for the world',
+        start: '11:10 AM', end: '11:30 AM', room: 'Mezzanine stage', theme: 'Craft', topics: ['Illustration', 'Storytelling'],
+        speakers: ['Vicki Tan · Designer and Author'],
+        desc: 'Vicki Tan is a product designer who stumbled into authorship through Figma—a tool that gave her the courage to create an illustrated book about decision-making. This talk reveals the unexpected, messy journey of turning a movable concept into print, exploring thousands of design iterations, learning new skills in writing and drawing, and how that led to an untraditional memoir. By the end, she hopes you\'ll be ready for the world, and your own project, knowing that belief in your tools and yourself is all you need to make it happen.',
+        url: 'https://config.figma.com/san-francisco/session/e220cef8-e2a0-4384-b9a7-bf6a0b23274a/' },
+
+      { title: 'Dimensional shift: sculpting in Figma Draw',
+        start: '11:30 AM', end: '11:50 AM', room: 'Mezzanine stage', theme: 'Craft', topics: ['Illustration', 'Visual design'],
+        speakers: ['Josh McKenna · Independent Illustrator'],
+        desc: 'What happens when a successful career hits a wall? Illustrator Josh McKenna shares his personal journey through creative block and how learning a new program saved his practice. In this session, Josh demonstrates his unified Figma Draw workflow, sharing practical techniques for using 2D vector effects to create 3D depth. Discover how becoming a student again makes your brain \'porous\' to new dimensions, bridging the gap between flat design and 3D. Learn why picking up a new tool isn\'t just a technical upgrade, it\'s a creative lifeline.',
+        url: 'https://config.figma.com/san-francisco/session/274b9aeb-8c3a-49b2-b241-325ec5b50487/' },
+
+      { title: 'Out of sync, on purpose: desktop design after mobile won',
+        start: '11:50 AM', end: '12:10 PM', room: 'Mezzanine stage', theme: 'Craft', topics: ['UX', 'Workflows'],
+        speakers: ['Giulio Fagiolini · Staff Designer, Spotify'],
+        desc: 'This talk is about designing for Spotify\'s desktop app—the original Spotify experience that continues to evolve alongside mobile. It explores how a small, focused team interprets features not by copying them 1:1, but by tailoring execution to the platform\'s strengths. Desktop plays a distinct role in people\'s routines—a companion for deep focus, creation, and immersive listening. Through real examples, Giulio shows how being small, deliberate, and a little out of sync can transform consistency into craft.',
+        url: 'https://config.figma.com/san-francisco/session/eb8fbae1-7cdf-420c-bfbe-cd676fccd1d0/' },
+
+      { title: 'Writing for humans in an AI world',
+        start: '12:10 PM', end: '12:30 PM', room: 'Mezzanine stage', theme: 'Strategy', topics: ['Content design', 'AI'],
+        speakers: ['Chelsea Larsson · Content Design, Anthropic'],
+        desc: 'Content designers at Anthropic don\'t write Claude\'s responses—they write everything around them: prompt starters, UI copy, feature names, voice principles. This talk explores how content design shifts when your interface understands natural language and how to teach collaboration (not just use) through the edges of the experience. Whether you\'re designing AI products or wondering how AI changes the craft, this talk addresses the challenge of designing frames around intelligence that talks back.',
+        url: 'https://config.figma.com/san-francisco/session/47d280de-e85a-4e10-b6e6-b97734490e9f/' },
+
+      { title: 'Designing the product that can do anything',
+        start: '12:45 PM', end: '1:05 PM', room: 'Mezzanine stage', theme: 'Strategy', topics: ['Hardware', 'Research', 'Prototyping'],
+        speakers: ['Brian Ringley · Distinguished PM & HRI Designer, Boston Dynamics'],
+        desc: 'Software, robotics, machine intelligence, and spatial computing have collided to present us with one of the greatest UX challenges of our time: How do you design an interface for a humanoid robot that can theoretically do anything? This talk will dive into the design challenges of teaching a robot about the world in three parts: Training robots to develop skills, building application interfaces to author task behaviors, and integrating with facilities to monitor robots\' effectiveness and realize the vision of the software-defined factory.',
+        url: 'https://config.figma.com/san-francisco/session/ac133b2f-2b12-42b3-8cbc-d9c27e0c1195/' },
+
+      { title: 'Prompts to fashion: AI-powered 3D-printed garments',
+        start: '1:05 PM', end: '1:25 PM', room: 'Mezzanine stage', theme: 'Craft', topics: ['Scale', 'AI', 'Workflows'],
+        speakers: ['Danit Peleg · Founder, 3D-Printed Fashion Lab'],
+        desc: 'Danit Peleg\'s vision is a new paradigm for fashion production: an AI-powered workflow that converts sewing patterns into full-size soft 3D-printable textiles—prompts to 3D-printed fashion, using bio-based, zero-microplastic materials developed for wearable, soft textiles. This session brings that vision to the Config stage through a live reveal of 3 looks designed with Weavy and printed using this new workflow, showing the design community what zero-waste, on-demand, fully digitized fashion actually looks and feels like. Danit is making clear that the tools to build a circular, on-demand fashion future already exist today.',
+        url: 'https://config.figma.com/san-francisco/session/349f94c6-628e-40ff-9f90-119750e60bfa/' },
+
+      { title: 'Patterns for restarting the world',
+        start: '1:25 PM', end: '1:45 PM', room: 'Mezzanine stage', theme: 'Craft', topics: ['Workflows', 'Dev and code'],
+        speakers: ['Switch Angel + LO.FI.SCI.FI · Artist & Software Engineer, Polymatters'],
+        desc: 'This talk explores human computer interaction through the design of programmable creative tools. Drawing on our work maintaining Strudel, a live-coded music system, we\'ll examine how having absolute freedom over text interfaces enables more intimate and natural interactions. With a background in instrument making, we frame software as an interactive artifact meant to be tuned and learned through use—engaging with a design space that hasn\'t fully crystallized yet, where shaping your own environment becomes a playground for creativity.',
+        url: 'https://config.figma.com/san-francisco/session/9fa7990f-6e84-4b27-863c-36b97d656fa1/' },
+
+      { title: 'The edge case is everyone',
+        start: '2:45 PM', end: '3:05 PM', room: 'Mezzanine stage', theme: 'Strategy', topics: ['UX', 'Accessibility'],
+        speakers: ['Willie King · Business Development Manager, T-Mobile', 'Lex Liley · Associate Director, Product Strategy, Kettle'],
+        desc: 'Most communication technology was built for an able-bodied world. For more than 11 million Americans who are Deaf or Hard of Hearing, a phone call can still be a barrier. T-Mobile set out to rethink that experience. Willie King and Lex Liley share how their teams partnered with the DHH community to challenge assumptions about voice communication—a look at inclusive design and why solving hard challenges leads to better experiences for everyone.',
+        url: 'https://config.figma.com/san-francisco/session/248c6563-329e-4eee-9271-de8fa416a85e/' },
+
+      { title: 'ESPN\'s migration playbook: the move to Figma with One North',
+        start: '3:05 PM', end: '3:25 PM', room: 'Mezzanine stage', theme: 'Design systems', topics: ['Scale', 'Brand'],
+        speakers: ['Elliott Munoz · Creative Director, ESPN Creative Studio', 'Matt Rogers · Product Design Lead, One North'],
+        desc: 'Each game day broadcast features a host of slick visuals—digital scoreboards, player stats, and matchup graphics. But behind the scenes, each individual design requires a huge lift to get from concept to live on air. In this session, One North and ESPN share how migrating from Photoshop to Figma revealed new ways to collaborate, scale, and accelerate workflows. From initial adoption to transformative impact, this talk highlights not only how Figma helped push ESPN\'s design system to the next level, but how their design system pushed One North to up their game, too.',
+        url: 'https://config.figma.com/san-francisco/session/5ec10ea1-ecd4-4ccc-ab98-bc3ccd03137f/' },
+
+      { title: 'Reimagining NASA.gov to tell earth\'s most important stories',
+        start: '3:25 PM', end: '3:45 PM', room: 'Mezzanine stage', theme: 'Process', topics: ['Workflows', 'UX'],
+        speakers: ['Ben Shown · Head of Design, Blink UX', 'Megan Greco · Senior Design Lead, Greenlight'],
+        desc: 'NASA\'s digital universe just got a major upgrade. With a bold new web experience and the Horizon Design System, NASA is now equipped to tell its most important stories—breakthroughs, missions, and cosmic wonders—with clarity, cohesion, and style. In this session, Ben and Megan pull back the curtain on designing for rocket scientists, sharing how vision meets velocity in a high-stakes collaboration. Expect real talk on aligning stakeholders, designing for scale, and building a system that inspires the world—one pixel at a time.',
+        url: 'https://config.figma.com/san-francisco/session/1a2f5f6c-dc7f-431b-acc7-5fd16befe8b4/' },
+
+      /* Maker Stage */
+      { title: 'Google Workspace: session to be announced',
+        start: '11:10 AM', end: '11:30 AM', room: 'Maker Stage', theme: 'Process', topics: [],
+        speakers: ['Addison Rodomista · UX Design Lead, Google', 'Chloe Fagan-Tucker · Google Workspace BD & Strategic Partnerships, Google'],
+        url: 'https://config.figma.com/san-francisco/session/ee548465-66ff-48ed-a86b-ee55e0be22f2/' },
+
+      { title: 'How to build content systems for AI product workflows',
+        start: '11:50 AM', end: '12:10 PM', room: 'Maker Stage', theme: 'Process', topics: ['AI', 'Content design', 'UX'],
+        speakers: ['Jessica Ouyang · Co-founder, Ditto', 'Jolena Ma · Co-founder, Ditto'],
+        desc: 'With AI, teams are shipping faster than ever. Designers are prototyping directly in the product. Engineers are coding at the speed of thought. But every tool your team touches is generating copy—keeping it consistent, on-brand, and compliant has never been harder. Jessica and Jolena, co-founders of Ditto, will show you how to build a content system that keeps up. Using Figma Make and Ditto, you\'ll wire together a living system that generates copy from your guidelines, flags what doesn\'t align, and gives every teammate—and every AI tool—the same source of copy truth.',
+        url: 'https://config.figma.com/san-francisco/session/520fcaa6-76e0-4703-89b0-9f4dfb9a91de/' },
+
+      { title: 'From concept to confidence with Dscout AI',
+        start: '12:30 PM', end: '12:50 PM', room: 'Maker Stage', theme: 'Process', topics: ['AI', 'Research'],
+        speakers: ['Lauren Madura · Director of Product Design, Dscout', 'Michael Winnick · CEO & Founder, Dscout'],
+        desc: 'AI has accelerated the time between idea and execution. Teams can now generate concepts, prototypes, and products in days. Everyone\'s a builder now. But speed without care, validation, and taste creates expensive mistakes. In this session, you\'ll learn how Dscout\'s AI-powered research suite supports the entire product development system—from ideation to iterative testing—while enabling designers, PMs, and product teams to make decisions quickly and confidently.',
+        url: 'https://config.figma.com/san-francisco/session/a9ed6f89-a852-48bf-9f6c-245dab895b87/' },
+
+      { title: 'Hacking AI for creative operations at scale',
+        start: '1:50 PM', end: '2:10 PM', room: 'Maker Stage', theme: 'Process', topics: ['AI', 'Scale', 'Workflows'],
+        speakers: ['Rory Flynn · Founder, Systematiq AI'],
+        desc: 'Most creative teams are using AI to make assets faster. The real opportunity is further upstream—inside the systems, workflows, and decision logic that govern how creative gets made at scale. In this session, Rory Flynn shows how mastering three core skills—deconstruction, system prompts, and workflow building—unlocks the full power of Figma Weave for any team. You\'ll see what real deployment looks like from inside a billion-dollar global consumer tech brand, and what the future of creative ops looks like when AI is built in from the start.',
+        url: 'https://config.figma.com/san-francisco/session/e49d78e2-a2ff-4b10-98bc-47bd6cec2d48/' },
+
+      { title: 'How structured thinking gives your AI superpowers',
+        start: '2:30 PM', end: '2:50 PM', room: 'Maker Stage', theme: 'Process', topics: ['AI', 'Workflows'],
+        speakers: ['Carola Pescio Canale · Head of Design, AI, Atlassian'],
+        desc: 'The best designers in the AI era will use it to scale their thinking, not just generate stuff. This talk looks at how a more structured design process—in docs, issues, trackers, and briefs—turns AI from a one-off creative aid into a genuine collaborator.',
+        url: 'https://config.figma.com/san-francisco/session/ca0448a6-6274-455e-b32e-7ed465ed8e7a/' },
+
+      { title: 'AI gave you a dozen PhDs. Research wasn\'t one of them. Yet.',
+        start: '3:10 PM', end: '3:30 PM', room: 'Maker Stage', theme: 'Strategy', topics: ['AI', 'Research'],
+        speakers: ['Ned Dwyer · CEO & Co-founder, Great Question'],
+        desc: 'The AI builder stack has handed every designer and PM a dozen PhDs in their pocket. Data analysis, prototyping, coding—every role is now full-stack, and product velocity has never been faster. But one capability is still missing: rigorous, systematic customer research. Not the slow, six-week kind designed for a world where software took months to ship. Ned Dwyer makes the case that closing this gap is the highest-leverage move a product builder can make—showing how you can surface prior research, get guided to the right methodology, and run analyses with hundreds of customers overnight.',
+        url: 'https://config.figma.com/san-francisco/session/24762e47-798d-47d7-83fd-7ae7c2d0d412/' },
+
+      /* Community Stage */
+      { title: 'The most important component: community',
+        start: '2:10 PM', end: '2:30 PM', room: 'Community Stage', theme: 'Process', topics: ['AI', 'Product', 'Storytelling'],
+        speakers: ['Alicia Kranjc · Figma Community Product Manager, Figma'],
+        desc: 'The more AI enters the creative process, the louder the question gets: what makes our work distinctly ours? This talk makes the case that community—real human connection, shared perspective, and creative kinship—is the answer. And why Figma is building tools that keep it at the center.',
+        url: 'https://config.figma.com/san-francisco/session/b8b2cb7e-706f-4d96-aa85-24c40ab6c9d9/' },
+
+      { title: 'Class chaos to clarity: our 0–1 journey with AI in education',
+        start: '2:40 PM', end: '3:00 PM', room: 'Community Stage', theme: 'Strategy', topics: ['AI', 'Product', 'UX'],
+        speakers: ['Mubarak "Moby" Marafa · Staff Product Designer, Goodnotes', 'Wendy Liao · Learning and Development Specialist, Goodnotes'],
+        desc: 'How do you launch a product for teachers, students, and AI—all at once? This talk takes you inside the 0–1 journey of Goodnotes Classroom: from bold beginnings and ambitious goals to the reality of designing responsible AI that actually helps teachers (not replaces them). Get an honest, fast-paced look at wild prototypes, delusional ambitions, and how real classroom insights shaped a product that saves hours of grading time while keeping educators in control.',
+        url: 'https://config.figma.com/san-francisco/session/571df27c-3044-4342-96d2-ae016ce9c3b4/' },
+
+      { title: 'When to prototype; when to perfect',
+        start: '3:10 PM', end: '3:30 PM', room: 'Community Stage', theme: 'Craft', topics: ['Prototyping', 'Dev and code'],
+        speakers: ['Noah Finer · Software Engineer, Figma'],
+        desc: 'Noah spends many days at Figma prototyping janky interactions, and other days perfecting editor microinteractions so subtle they almost go unnoticed. How do these two engineering mindsets interact? And how have they shaped the way Noah builds experiences like Figma Slides, FigPals, and interactive transit personality tests?',
+        url: 'https://config.figma.com/san-francisco/session/b9992211-46a6-4f20-b7b1-358a8d23e352/' },
+    ]
+  },
+
+  /* ═══ JUNE 25 ═══════════════════════════════ */
+  {
+    label: 'June 25',
+    endTime: '7:00 PM',
+    rooms: ['Main stage', 'Level 2 Stage', 'Mezzanine stage', 'Maker Stage', 'Community Stage', 'Config Commons'],
+    sessions: [
+      /* Main stage */
+      { title: 'Opening keynotes',
+        sub: 'Death of the finished state — Brent David Freaney · Designing math — Grant Sanderson',
+        start: '9:00 AM', end: '10:00 AM', room: 'Main stage', theme: 'Keynote', topics: ['Brand', 'Visual design', 'Storytelling'],
+        speakers: ['Brent David Freaney · Art Director, Special Offer Inc.', 'Grant Sanderson · YouTube educator, 3Blue1Brown'],
+        desc: 'Two talks to open Day 2. Brent David Freaney explores the death of the finished state in modern design—what happens when software is never truly complete. Grant Sanderson, the mathematics educator behind 3Blue1Brown, shares how visual thinking and animation illuminate complex ideas, and what designers can learn from the language of math.',
+        url: 'https://config.figma.com/san-francisco/session/6c5a7b92-88f7-42d7-9ddc-b67cb35ec4ab/' },
+
+      { title: 'Figma deep dive',
+        start: '10:15 AM', end: '11:15 AM', room: 'Main stage', theme: 'Deep dive', topics: [],
+        speakers: [],
+        url: 'https://config.figma.com/san-francisco/session/2be8862e-bfbd-4276-851d-d10facbe1e1d/' },
+
+      { title: 'Figma deep dive',
+        start: '12:15 PM', end: '1:15 PM', room: 'Main stage', theme: 'Deep dive', topics: [],
+        speakers: [],
+        url: 'https://config.figma.com/san-francisco/session/82e928ab-95f0-46a3-b6f1-157a5f6fff00/' },
+
+      { title: 'Figma deep dive',
+        start: '2:00 PM', end: '3:00 PM', room: 'Main stage', theme: 'Deep dive', topics: [],
+        speakers: [],
+        url: 'https://config.figma.com/san-francisco/session/3f389393-0c3a-4c27-af5d-3af9e962d6fb/' },
+
+      { title: 'Closing keynotes', sub: 'To be announced',
+        start: '4:00 PM', end: '5:00 PM', room: 'Main stage', theme: 'Keynote', topics: [],
+        speakers: [],
+        url: 'https://config.figma.com/san-francisco/session/2327c9de-d189-4b98-b49c-79bffa38b723/' },
+
+      /* Level 2 Stage */
+      { title: 'The invisible mechanisms in your interfaces',
+        start: '10:30 AM', end: '10:50 AM', room: 'Level 2 Stage', theme: 'Craft', topics: ['UX', 'Research'],
+        speakers: ['Johannes Mutter · Design Engineer, mutter.co'],
+        desc: 'For 15 years, Johannes has been taking interfaces apart and collecting the mechanisms underneath. There\'s a name for when your cursor sits between bold and regular and the system can\'t tell you which wins. It\'s called cursor affinity. Your tools are full of mechanisms like this—each with an inventor, a constraint, and a lineage you can trace. This talk takes them apart, names them, and hands you a practice for disassembling any interface you touch. You\'ll leave with the words to make others see what you see.',
+        url: 'https://config.figma.com/san-francisco/session/cb25f8b3-31db-4849-a799-d02a2f052f5c/' },
+
+      { title: 'Dense by design',
+        start: '10:50 AM', end: '11:10 AM', room: 'Level 2 Stage', theme: 'Craft', topics: ['Visual design', 'UX'],
+        speakers: ['Matthew Ström-Awn · Founder, mu.design'],
+        desc: 'Why did Google beat Yahoo? Why does Bloomberg Terminal still dominate? It\'s not about cramming more onto the screen—it\'s about maximizing value in time and space. This talk unpacks UI density from first principles, moving through Tufte, gestalt psychology, and perceived performance to arrive at a framework you can actually use.',
+        url: 'https://config.figma.com/san-francisco/session/69636242-b6b2-4b27-a831-bfd73eed654f/' },
+
+      { title: 'Usernames on Instagram: how a craft fix became an identity crisis',
+        start: '11:10 AM', end: '11:30 AM', room: 'Level 2 Stage', theme: 'Craft', topics: ['Content design', 'UX', 'Storytelling'],
+        speakers: ['Rose McManus · Content Designer, Instagram (Meta)'],
+        desc: 'A small craft fix in Instagram\'s interface spiraled into a much bigger question: What is a username, actually? And what does it mean for how we understand identity online? This talk traces that spiral—from @dril to Baudrillard, from the pumpkin spice latte to the phone icon that still looks like a landline—and arrives somewhere concrete: in the Internet Age, users don\'t just adapt to what we build, they create something new with it. Representations drift from reality, and people don\'t just adapt to products—they complete them.',
+        url: 'https://config.figma.com/san-francisco/session/5d1f7e2d-c6f5-4001-b2c7-23f70a9f92d9/' },
+
+      { title: 'The future is low-tech: lessons from the early 2000s',
+        start: '11:30 AM', end: '11:50 AM', room: 'Level 2 Stage', theme: 'Process', topics: ['UX'],
+        speakers: ['Jésabel DC · Tech Anthropologist & EdTech Founder, The Lifestyle Lab'],
+        desc: 'We\'ll rewind to the early 2000s—when tech was low-tech, playful and non-extractive. Think: loading bars, Tamagotchis and RollerCoaster Tycoon in a cereal box. This talk explores calm, nervous-system-friendly design: attention regulation, slowness as a feature, autonomy-first mechanics, real-world interaction and gentle feedback loops. A call for designers and builders to make tech feel human again.',
+        url: 'https://config.figma.com/san-francisco/session/79c76468-0c48-41ae-8775-7a46d4409bb3/' },
+
+      { title: 'Everyone\'s still eating: building Notion\'s design system',
+        start: '12:50 PM', end: '1:10 PM', room: 'Level 2 Stage', theme: 'Design systems', topics: ['Visual design', 'Workflows', 'Prototyping'],
+        speakers: ['Tamara Chu · Design Engineer, Notion', 'Shauna Sapper · Software Engineer, Notion'],
+        desc: 'Introducing a design system at a design-led company can be like trying to whip a tablecloth off a beautifully set table while people are still eating—and maybe put a nicer tablecloth on at the same time. As part of Notion\'s newly formed design system team (est. 2025), we\'ll share the tools and techniques we\'re using to refactor Notion\'s visual foundations and improve things from the inside, without slowing down our peers or compromising the spirit of thoughtful, handcrafted care that makes Notion feel like Notion.',
+        url: 'https://config.figma.com/san-francisco/session/9bbf68e9-0644-48df-9b6c-f4ad1827a146/' },
+
+      { title: 'Preparing Rocket for the AI era',
+        start: '1:10 PM', end: '1:30 PM', room: 'Level 2 Stage', theme: 'Design systems', topics: ['AI', 'Dev and code', 'Scale'],
+        speakers: ['Emily Strobl · Director, Product Design — AI & Design Systems, Rocket', 'Will Hobick · Design Engineering Lead, Rocket'],
+        desc: 'While many companies are still preparing for AI, Rocket is already embedding it into the fabric of how thousands of team members work every day. Learn how Rocket is leveraging Figma\'s ecosystem—design systems, Code Connect, Figma Make, and the Figma MCP—to power AI-native workflows at scale and help more people achieve their dream of homeownership.',
+        url: 'https://config.figma.com/san-francisco/session/cc9f82eb-31cd-4bd3-93db-bb060c95a6ac/' },
+
+      { title: 'AI gold: the first design system in Figma Make',
+        start: '1:30 PM', end: '1:50 PM', room: 'Level 2 Stage', theme: 'Design systems', topics: ['AI', 'Workflows', 'Prototyping'],
+        speakers: ['Harvey Whiting · Product Designer, Meta'],
+        desc: 'Hear the story of how Meta worked directly with Figma to test design systems in Figma Make. You\'ll learn how, in our quest to push the boundaries of AI-driven quality, Meta\'s business design system team was inspired to rebuild their legacy design system for business tools from the ground up. Our talk covers the "sloppy" challenges we encountered, how we resolved them in close partnership with Figma, and outlines a 3-step repeatable playbook that any team can use to deliver high-quality AI-generated designs—even without rebuilding your entire design system.',
+        url: 'https://config.figma.com/san-francisco/session/c856c21b-317e-482c-8a3f-f01280aeed56/' },
+
+      { title: 'The marathon designer: creative endurance beyond prompts and pixels',
+        start: '2:35 PM', end: '2:55 PM', room: 'Level 2 Stage', theme: 'Process', topics: ['UX', 'Storytelling'],
+        speakers: ['Socrates Charisis · Founder & Designer, Quintessential'],
+        desc: 'In a world obsessed with speed and chaos, design\'s biggest threat isn\'t AI—it\'s burnout, pixel-pushing, doing things the old way, waiting for permission. This talk introduces a framework for creative endurance beyond prompts and pixels. Through three core practices—sustainable pacing, builder culture, and versatile hiring—Socrates Charisis shares lessons from running a bootstrapped studio in Athens. Expect real stories, actionable systems, and new ways to keep creativity alive when the work gets dull and the tools keep changing.',
+        url: 'https://config.figma.com/san-francisco/session/7856aab8-4ce1-430a-8066-efae860ffa60/' },
+
+      { title: 'Design systems anarchy',
+        start: '2:55 PM', end: '3:15 PM', room: 'Level 2 Stage', theme: 'Design systems', topics: ['Storytelling', 'AI', 'Scale'],
+        speakers: ['Lauren LoPrete · Design Systems Leader'],
+        desc: 'Most people don\'t get into design systems to be a cop. But we\'ve become exactly that. Product teams go around us while we create rules nobody follows. Punk figured this out decades ago. You need shared ethos, basic infrastructure, and people who care. Quality comes from culture, not compliance. Drawing from years running an indie record label and nearly 10 years leading systems at scale at Block, Dropbox, and Expedia, this talk applies punk\'s blueprint to systems. AI handed designers the means of production. The gatekeeping model is dead. Stop managing systems. Start nurturing subcultures.',
+        url: 'https://config.figma.com/san-francisco/session/ace52d61-6725-4338-80c9-cd8b0e8757e4/' },
+
+      /* Mezzanine stage */
+      { title: '10 years of daily sketching',
+        start: '10:20 AM', end: '10:40 AM', room: 'Mezzanine stage', theme: 'Craft', topics: ['Storytelling', 'Visual design', 'Workflows'],
+        speakers: ['Zach Lieberman · Artist, MIT Media Lab'],
+        desc: 'Ten years ago, after a rough year, Zach Lieberman posted a small code sketch on Instagram on New Year\'s Day—and he\'s posted one every day since. This talk is about what he\'s learned from that practice of making something every day. He\'ll focus on the importance of boredom, how to structure iteration, how he structures research, and most importantly, finding creative freedom.',
+        url: 'https://config.figma.com/san-francisco/session/702164d5-9654-468e-9e8a-eeb3ef609fe7/' },
+
+      { title: 'The world of street art and care-filled design',
+        start: '10:40 AM', end: '11:00 AM', room: 'Mezzanine stage', theme: 'Process', topics: ['Illustration', 'Visual design'],
+        speakers: ['Ella Rochelle-Lawton · Project & Program Manager, First Amendment'],
+        desc: 'After studying art and design at UC Berkeley, Ella ran off to join the circus and designed a billboard about it. Since then, teaching street art history and spray paint has taught her that the best design lives on the street, where people can touch it and make it their own. This talk shares how working with teams from Adobe, Google, and Figma transformed her view of design from pixels to people—exploring how street art, from the Guerrilla Girls to Michael Jang, builds belonging, redefines public space, and inspires community throughout the design process.',
+        url: 'https://config.figma.com/san-francisco/session/d4956efb-26bd-4c93-97c6-9ef7fdd72305/' },
+
+      { title: 'Managing multiple creative passions in a world that tells you to specialize',
+        start: '11:00 AM', end: '11:20 AM', room: 'Mezzanine stage', theme: 'Craft', topics: ['Brand', 'Storytelling'],
+        speakers: ['Lauren Hom · Lettering Artist & Designer, Hom Sweet Hom'],
+        desc: 'Lauren Hom shares how she\'s managed multiple creative passions throughout her 15-year career, in a world that tells you to specialize.',
+        url: 'https://config.figma.com/san-francisco/session/320859cb-ec55-495e-aeef-2cb7beea60cd/' },
+
+      { title: 'The learning curve: turning real-world motion into design',
+        start: '12:25 PM', end: '12:45 PM', room: 'Mezzanine stage', theme: 'Craft', topics: ['Motion design', 'Dev and code', 'Workflows'],
+        speakers: ['Patrick Flaherty · Senior Motion Designer, Microsoft'],
+        desc: 'Want to animate like the pros and spend less time wrestling the graph editor? This session reveals a capture-to-curve workflow that turns recorded gestures into clean, editable timing you can drop into the tools you use. We\'ll map a motion in the room to a UI element live and unpack a practical loop: capture, curve, polish, name. You\'ll leave with a shared motion language you can reuse across design and code, plus techniques to make interfaces feel natural so newcomers move with confidence and experts move faster.',
+        url: 'https://config.figma.com/san-francisco/session/19770d3f-6a7c-436b-94f2-c35cd0d15b43/' },
+
+      { title: 'The canvas is not dead',
+        start: '12:45 PM', end: '1:05 PM', room: 'Mezzanine stage', theme: 'Process', topics: ['AI', 'UX', 'Workflows'],
+        speakers: ['Catt Small · Staff Product Designer, Dropbox'],
+        desc: 'You\'ve probably heard it: "the canvas is dead. Just prompt your way to a UI and ship it." But Catt doesn\'t work on simple problems. She designs for tens of millions of users, inside products with years of context and use cases AI tools can\'t easily handle. When the complexity is that deep, you can\'t skip the part where you actually think. She\'ll walk through her framework for deciding what deserves deep, by-hand exploration versus what to hand off to the machine. You\'ll leave knowing how to match your tools to your actual problems.',
+        url: 'https://config.figma.com/san-francisco/session/3a3146f3-98c6-40e7-a09b-ff3c606bf5c1/' },
+
+      { title: 'Own the loop: how designers and researchers win with AI evals',
+        start: '2:05 PM', end: '2:25 PM', room: 'Mezzanine stage', theme: 'Strategy', topics: ['AI', 'Research', 'UX'],
+        speakers: ['Setor Zilevu · Researcher, Figma'],
+        desc: 'AI is everywhere, but how do we know if it\'s actually good? The teams winning with AI aren\'t just moving fast—they\'re measuring well. And that measurement starts with a human-centered definition of "good" that lives in design and research. AI evals have long been an engineering problem. That\'s changing. As capabilities commoditize, design is the new moat. This talk is an invitation for designers and researchers to lead and become architects of how we evaluate AI against real human needs.',
+        url: 'https://config.figma.com/san-francisco/session/2bb4e5de-dbaf-47c5-8c12-b58e5728ab62/' },
+
+      { title: 'Design for the future of apps',
+        start: '2:25 PM', end: '2:45 PM', room: 'Mezzanine stage', theme: 'Process', topics: ['AI', 'UX', 'Dev and code'],
+        speakers: ['Rody Davis · Developer Relations Engineer, Google', 'Craig Labenz · Developer Relations Engineer, Google'],
+        desc: 'Generative AI is not only about text chats and image generation. At Google, AI is also increasingly used to compose ephemeral UI on demand—a pattern called Generative UI. While this promises unparalleled personalization for each user, it also risks regressions in UX pillars like consistency and clear information hierarchy. Learn how designers can adapt design systems to realize the full potential of GenUI while also mitigating its risks.',
+        url: 'https://config.figma.com/san-francisco/session/d942bacb-600a-437f-817a-6d61794a930d/' },
+
+      { title: 'Designing money: how to build a trustworthy brand in the age of AI',
+        start: '2:45 PM', end: '3:05 PM', room: 'Mezzanine stage', theme: 'Process', topics: ['Brand', 'AI', 'Visual design'],
+        speakers: ['Chris Warner · Creative Lead, Brand Studio, Plaid'],
+        desc: 'How do we pair machine learning with true artistry? What\'s moral, what\'s safe, and what genuinely resonates in this new creative world? These are the questions that confronted our team at Plaid as we sought to reshape the way money looks and feels in the age of AI. In this far-reaching talk, we\'ll explore the ways authenticity has shaped the history of finance through the lens of graphic design and branding—and what machine learning means for its future.',
+        url: 'https://config.figma.com/san-francisco/session/a2fa6160-4f88-4215-a6e9-f91c78ee3d51/' },
+
+      { title: 'Legibility by design',
+        start: '3:05 PM', end: '3:25 PM', room: 'Mezzanine stage', theme: 'Strategy', topics: ['AI', 'UX', 'Product'],
+        speakers: ['Ryan Powell · Head of Design, Waymo'],
+        desc: 'Building trust in AI isn\'t about transparency; it\'s about communication design. Whether it\'s an autonomous vehicle or a generative agent, the challenge is the same: how much should a system communicate? Drawing from years at Waymo, this session explores a framework for trust. We\'ll move beyond automation toward legibility, where users understand intent rather than just monitoring tasks. Learn to calibrate feedback to avoid alert fatigue and build AI products that feel predictable and fundamentally trustworthy.',
+        url: 'https://config.figma.com/san-francisco/session/b2201a51-7000-4303-a371-ce00f5d9e2ed/' },
+
+      /* Maker Stage */
+      { title: 'The agentic design-to-code loop',
+        start: '10:15 AM', end: '10:35 AM', room: 'Maker Stage', theme: 'Process', topics: ['AI', 'Dev and code', 'Workflows'],
+        speakers: ['Jack Wotherspoon · Developer Advocate, Google', 'Andy Zhang · Design Engineer Lead, Google'],
+        desc: 'The traditional handoff of work creates a siloed world where designers and engineers speak different languages, and great ideas often get lost in translation. AI agents are changing that. Discover how Google\'s agentic tools bridge these disciplines—learn to turn Figma frames into production code in seconds, and explore the "reverse handoff," bringing web interfaces back to designers for faster iteration. We\'ll also explore how the designer\'s role evolves when creation becomes frictionless and what it means to design for intent-driven experiences in the age of the 10x engineer.',
+        url: 'https://config.figma.com/san-francisco/session/49406317-eda9-427a-84f6-c88b24857ed8/' },
+
+      { title: 'Building real-time user insights into your design workflow',
+        start: '10:50 AM', end: '11:10 AM', room: 'Maker Stage', theme: 'Process', topics: ['Research', 'Workflows', 'UX'],
+        speakers: ['Prayag Narula · CEO & Co-Founder, HeyMarvin'],
+        desc: 'Most design teams ship, then learn. You don\'t have to do that anymore. In this session, HeyMarvin CEO Prayag Narula walks through what it takes to build real-time user feedback into your designs. You\'ll hear about the integrations and tools that make it work in practice and what it looks like when research finally shows up where decisions get made. If you\'ve ever shipped something and wished you\'d heard from a user two weeks earlier, this one\'s for you.',
+        url: 'https://config.figma.com/san-francisco/session/ddcc3459-4bc6-43d4-8aba-103c1870e703/' },
+
+      { title: 'AI will upend your process—for the better',
+        start: '11:25 AM', end: '11:45 AM', room: 'Maker Stage', theme: 'Process', topics: ['AI', 'UX'],
+        speakers: ['Justin Meyer · CEO, Bitovi'],
+        desc: 'AI gives us an opportunity to rethink how work gets done across the software delivery lifecycle. In this talk, concrete examples show how AI removes bottlenecks that keep us from discovering and delivering value. We\'ll explore how AI supports building design systems, generates implementation-ready user stories, and writes production code directly from Figma assets. The result: faster validation, earlier feedback, and more time for craft.',
+        url: 'https://config.figma.com/san-francisco/session/b751e092-79d1-4082-9c8f-aeeba6ec3b0e/' },
+
+      { title: 'Quirk up your workplace',
+        start: '12:45 PM', end: '1:05 PM', room: 'Maker Stage', theme: 'Process', topics: ['Storytelling'],
+        speakers: ['Darby Thomas · Senior Product Designer, GitHub'],
+        desc: 'This talk is about encouraging people to be a little more silly, a little more playful when they\'re at work. The rituals, gimmicks, and stunts we\'ve done at GitHub to make remote work fun and interesting.',
+        url: 'https://config.figma.com/san-francisco/session/8d8c083f-75c5-4595-ba5d-c8c2809ec350/' },
+
+      { title: 'Designing with confidence in an AI-powered world',
+        start: '1:20 PM', end: '1:40 PM', room: 'Maker Stage', theme: 'Strategy', topics: ['AI', 'Research', 'UX'],
+        speakers: ['Bobby Meixner · VP, Solution Marketing, UserTesting'],
+        desc: 'AI has fundamentally changed the pace of design. Ideas move faster. Iterations are instant. Options are endless. But speed introduces a new tension: decisions that are harder to defend. In this session, Bobby Meixner shares findings from UserTesting\'s latest research on defensible design in the age of AI and explores how leading teams are closing the confidence gap. You\'ll see how embedding real human insight directly inside the design workflow allows teams to move quickly, without sacrificing certainty. Because in an AI-powered world, the real advantage isn\'t speed—it\'s conviction.',
+        url: 'https://config.figma.com/san-francisco/session/f9a5d27e-b1c3-4674-92ee-0545d7822fc0/' },
+
+      /* Community Stage */
+      { title: 'In praise of dark mode',
+        start: '1:10 PM', end: '1:30 PM', room: 'Community Stage', theme: 'Design systems', topics: ['Visual design', 'UX'],
+        speakers: ['Mehmet Aydın Baytaş · Senior Design Engineer, Attio'],
+        desc: 'Good design emits as little light as possible. This talk makes the case for Dark Mode Maximalism—that all user interfaces should be designed in dark mode. Drawing on two decades of design/engineering practice and arcane scholarship, Baytaş explains that dark mode is not a toggle, but the default condition of good design.',
+        url: 'https://config.figma.com/san-francisco/session/404d5692-4463-4304-b74c-723a71e491a1/' },
+
+      { title: 'Designing brand intelligence: from rules to expression',
+        start: '1:40 PM', end: '2:00 PM', room: 'Community Stage', theme: 'Process', topics: ['Brand', 'AI', 'Workflows'],
+        speakers: ['Nicole Martinez · Co-founder, Let\'s Jetty'],
+        desc: 'In an AI-powered design world, the designer\'s role is fundamentally shifting. The real edge is no longer technical execution but how you think, decide, and design in a world changing faster than your design system. This talk reimagines brand guides as cognitive frameworks inspired by J Dilla, who reimagined rhythm and broke away from rigid quantization to create something more human, more fluid, more felt. Learn how to organize brands by cognition, build interactive frameworks in Figma, and evolve from makers to strategic directors.',
+        url: 'https://config.figma.com/san-francisco/session/b14b91d9-50d9-4081-a943-51f331a2b4b4/' },
+
+      { title: 'Gnarly by design: building systems with grit',
+        start: '2:10 PM', end: '2:30 PM', room: 'Community Stage', theme: 'Design systems', topics: ['Visual design', 'UX', 'Scale'],
+        speakers: ['Beau Wingfield · Visual Product Designer, ex-EA, Full Circle Studio'],
+        desc: 'Clean design systems are hard to create, but gritty, texture-heavy design systems are even harder. Join Beau for a journey into a video game design system and learn how to add some character to your squeaky-clean system and make it scaleable.',
+        url: 'https://config.figma.com/san-francisco/session/c6c9fdb6-0e45-4b0e-b966-76675517b045/' },
+
+      { title: 'Don\'t forget the feeling: a critique of software in 2026',
+        start: '2:40 PM', end: '3:00 PM', room: 'Community Stage', theme: 'Craft', topics: ['Brand', 'AI'],
+        speakers: ['Luis Ouriach · Designer Advocate, Figma'],
+        desc: 'What does making feel like in 2026? Luis will explore how he learned to stop worrying and love AI—or at least stop rejecting it—to accelerate his creative output. Through critique of popular AI tools, Luis will explain that in this fast-paced environment it\'s essential that we don\'t forget that feeling and brand are what brings users back.',
+        url: 'https://config.figma.com/san-francisco/session/4b523a98-9e0e-4b9e-8783-c405ab892602/' },
+
+      /* Config Commons */
+      { title: 'Closing happy hour',
+        sub: 'Toast to new connections and inspirational sessions at Config Commons! We\'re open until 6:30PM.',
+        start: '5:00 PM', end: '6:30 PM', room: 'Config Commons', theme: 'Event', topics: [],
+        speakers: [],
+        url: 'https://config.figma.com/san-francisco/event/789dfa39-dfdf-4f0b-9c6b-b52fefe7b975/' },
+    ]
+  }
+];
+
+/* ─── Build grid HTML ───────────────────────────────────── */
+function buildDayHTML(dayIdx) {
+  const day   = DAYS[dayIdx];
+  const gridH = (toMin(day.endTime) - DSTART) * SCALE;
+  const startH = 9;
+  const endH   = toMin(day.endTime) / 60;
+
+  let html = '<div class="schedule-day active"><div class="schedule-inner">';
+
+  /* Room header row */
+  html += '<div class="rooms-header"><div class="th-corner"></div>';
+  for (const r of day.rooms) {
+    const rc = RC[r] || { c: '#888', t: '#888' };
+    html += `<div class="th-room" style="border-bottom-color:${rc.c};color:${rc.t}">${r}</div>`;
+  }
+  html += '</div>';
+
+  /* Grid body */
+  html += '<div class="grid-body">';
+
+  /* Time column */
+  html += `<div class="time-col" style="height:${gridH}px">`;
+  for (let h = startH; h <= Math.ceil(endH); h++) {
+    const t   = (h - startH) * 60 * SCALE;
+    const lbl = h < 12 ? `${h}am` : h === 12 ? '12pm' : `${h - 12}pm`;
+    html += `<div class="${h % 2 === 0 ? 'time-tick major' : 'time-tick'}" style="top:${t}px">${lbl}</div>`;
+  }
+  html += '</div>';
+
+  /* Room tracks */
+  for (const room of day.rooms) {
+    const rc = RC[room] || { c: '#888', bg: '#f7f7f7', t: '#888' };
+    html += `<div class="track" style="height:${gridH}px">`;
+
+    /* Grid lines */
+    for (let h = startH; h <= Math.ceil(endH); h++) {
+      const t = (h - startH) * 60 * SCALE;
+      html += `<div class="hour-line" style="top:${t}px"></div>`;
+      const t2 = t + 30 * SCALE;
+      if (t2 < gridH) html += `<div class="half-line" style="top:${t2}px"></div>`;
+    }
+
+    /* Sessions */
+    for (const s of day.sessions.filter(s => s.room === room)) {
+      const t = pxTop(s.start);
+      const h = pxH(s.start, s.end);
+      if (h < 1) continue;
+
+      /* Register in map */
+      const key = `s_${dayIdx}_${room.replace(/\W/g,'_')}_${s.start.replace(/\W/g,'')}`;
+      SESSION_MAP[key] = { ...s, dayLabel: day.label };
+
+      const spk      = (s.speakers || []).slice(0, 2).join(', ');
+      const isKeynote = s.theme === 'Keynote';
+      const clamp    = h >= 90 ? 4 : h >= 60 ? 3 : h >= 40 ? 2 : 1;
+
+      const topicsAttr = (s.topics || []).join(',');
+      html += `<div class="${isKeynote ? 'keynote-span' : 'session'}"
+        style="top:${t + 2}px;height:${h - 4}px;background:${rc.bg};border-left-color:${rc.c}"
+        data-topics="${topicsAttr}"
+        onclick="openModal('${key}')">`;
+
+      if (isKeynote) {
+        html += `<div class="ks-tag" style="color:${rc.c}">Keynote</div>`;
+        html += `<div class="ks-title">${s.title}</div>`;
+        if (spk && h >= 50) html += `<div class="ks-speaker">${spk}</div>`;
+      } else {
+        if (h >= 35) html += `<div class="s-type" style="color:${rc.c}">${s.theme}</div>`;
+        html += `<div class="s-title" style="-webkit-line-clamp:${clamp}">${s.title}</div>`;
+        if (spk && h >= 50) html += `<div class="s-speaker">${spk}</div>`;
+      }
+
+      html += '</div>';
+    }
+
+    html += '</div>'; /* .track */
+  }
+
+  html += '</div></div></div>'; /* .grid-body .schedule-inner .schedule-day */
+  return html;
+}
+
+/* ─── Modal logic ───────────────────────────────────────── */
+function openModal(key) {
+  const s = SESSION_MAP[key];
+  if (!s) return;
+  const rc = RC[s.room] || { c: '#888', bg: '#f7f7f7', t: '#888' };
+
+  /* Description */
+  const descEl = document.getElementById('modalDesc');
+  if (s.desc) {
+    descEl.textContent = s.desc;
+    descEl.style.display = '';
+  } else {
+    descEl.style.display = 'none';
+  }
+
+  /* Accent bar */
+  document.getElementById('modalAccent').style.background = rc.c;
+
+  /* Pills */
+  let pillsHTML = `<span class="modal-pill"
+    style="border-color:${rc.c};color:${rc.c};background:${rc.bg}">${s.theme}</span>`;
+  for (const topic of (s.topics || [])) {
+    pillsHTML += `<span class="modal-pill modal-pill-topic">${topic}</span>`;
+  }
+  document.getElementById('modalPills').innerHTML = pillsHTML;
+
+  /* Title */
+  document.getElementById('modalTitle').textContent = s.title;
+
+  /* Subtitle */
+  const subEl = document.getElementById('modalSubtitle');
+  if (s.sub) { subEl.textContent = s.sub; subEl.style.display = ''; }
+  else        { subEl.style.display = 'none'; }
+
+  /* Meta: date · time · room */
+  document.getElementById('modalMeta').innerHTML =
+    `<span>${s.dayLabel}</span>
+     <span class="modal-meta-dot"></span>
+     <span>${s.start} – ${s.end}</span>
+     <span class="modal-meta-dot"></span>
+     <span style="color:${rc.t};font-weight:500">${s.room}</span>`;
+
+  /* Speakers */
+  const spkSection = document.getElementById('modalSpeakers');
+  const spkList    = document.getElementById('modalSpeakerList');
+  if (s.speakers && s.speakers.length > 0) {
+    let spkHTML = '';
+    for (const raw of s.speakers) {
+      const parts = raw.split(' · ');
+      spkHTML += `<div class="modal-speaker-item">
+        <div class="modal-speaker-name">${parts[0]}</div>
+        ${parts[1] ? `<div class="modal-speaker-role">${parts[1]}</div>` : ''}
+      </div>`;
+    }
+    spkList.innerHTML = spkHTML;
+    spkSection.style.display = '';
+    document.querySelector('.modal-divider').style.display = '';
+  } else {
+    spkSection.style.display = 'none';
+    document.querySelector('.modal-divider').style.display = 'none';
+  }
+
+  /* CTA */
+  document.getElementById('modalCta').href = s.url || '#';
+
+  /* Open */
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeModal(); closeAllPanels(); }
+});
+
+/* ══════════════════════════════════════════════════════
+   PLANNER — My Schedule, Compare, Recommendations
+══════════════════════════════════════════════════════ */
+
+/* ─── State ────────────────────────────────────────── */
+const MY_INTERESTS = ['AI', 'Dev and code', 'Prototyping', 'Storytelling', 'UX'];
+let mySchedule = JSON.parse(localStorage.getItem('config2026_schedule') || '[]');
+let recInterests = new Set(MY_INTERESTS);
+let currentModalKey = null;
+let colleagueSchedule = [];
+
+/* ─── Persist ─────────────────────────────────────── */
+function saveMySchedule() {
+  localStorage.setItem('config2026_schedule', JSON.stringify(mySchedule));
+  updateBadge();
+  refreshScheduleHighlights();
+}
+
+/* ─── Badge counter ───────────────────────────────── */
+function updateBadge() {
+  const badge = document.getElementById('myScheduleCount');
+  if (badge) {
+    badge.textContent = mySchedule.length;
+    badge.classList.toggle('visible', mySchedule.length > 0);
+  }
+  const mobileBadge = document.getElementById('mobileScheduleCount');
+  if (mobileBadge) {
+    mobileBadge.textContent = mySchedule.length;
+    mobileBadge.classList.toggle('visible', mySchedule.length > 0);
+  }
+}
+
+/* ─── Highlight saved sessions on the grid ─────────── */
+function refreshScheduleHighlights() {
+  document.querySelectorAll('.session, .keynote-span').forEach(el => {
+    el.classList.remove('saved', 'conflict-card');
+  });
+  const conflicts = getConflicts(mySchedule);
+  const conflictKeys = new Set(conflicts.flatMap(c => [c.a.key, c.b.key]));
+  for (const item of mySchedule) {
+    const el = document.querySelector(`[onclick="openModal('${item.key}')"]`);
+    if (el) {
+      el.classList.add(conflictKeys.has(item.key) ? 'conflict-card' : 'saved');
+    }
+  }
+}
+
+/* ─── Time conflict detection ─────────────────────── */
+function getConflicts(schedule) {
+  const conflicts = [];
+  for (let i = 0; i < schedule.length; i++) {
+    for (let j = i + 1; j < schedule.length; j++) {
+      const a = schedule[i], b = schedule[j];
+      if (a.dayLabel !== b.dayLabel) continue;
+      const aS = toMin(a.start), aE = toMin(a.end);
+      const bS = toMin(b.start), bE = toMin(b.end);
+      if (aS < bE && bS < aE) conflicts.push({ a, b });
+    }
+  }
+  return conflicts;
+}
+
+function getBufferWarnings(schedule) {
+  const warnings = [];
+  const byDay = {};
+  for (const s of schedule) {
+    if (!byDay[s.dayLabel]) byDay[s.dayLabel] = [];
+    byDay[s.dayLabel].push(s);
+  }
+  for (const day in byDay) {
+    const sorted = [...byDay[day]].sort((a, b) => toMin(a.start) - toMin(b.start));
+    for (let i = 0; i < sorted.length - 1; i++) {
+      const curr = sorted[i], next = sorted[i + 1];
+      const gap = toMin(next.start) - toMin(curr.end);
+      if (gap >= 0 && gap < 10) {
+        warnings.push({ from: curr, to: next, gap });
+      }
+    }
+  }
+  return warnings;
+}
+
+/* ─── Toggle session in My Schedule ─────────────────── */
+function toggleSessionInSchedule() {
+  if (!currentModalKey) return;
+  const s = SESSION_MAP[currentModalKey];
+  if (!s) return;
+  const idx = mySchedule.findIndex(x => x.key === currentModalKey);
+  if (idx >= 0) {
+    mySchedule.splice(idx, 1);
+  } else {
+    mySchedule.push({ ...s, key: currentModalKey });
+  }
+  saveMySchedule();
+  updateModalAddBtn();
+  if (currentScreen === 'mySchedule') {
+    renderMySchedule();
+  }
+}
+
+function updateModalAddBtn() {
+  const btn = document.getElementById('modalAddBtn');
+  if (!btn || !currentModalKey) return;
+  const saved = mySchedule.some(x => x.key === currentModalKey);
+  btn.classList.toggle('added', saved);
+  btn.innerHTML = saved
+    ? `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Saved to My Schedule`
+    : `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg> Add to My Schedule`;
+}
+
+/* ─── Patch openModal to track current key ─────────── */
+const _origOpenModal = openModal;
+openModal = function(key) {
+  currentModalKey = key;
+  _origOpenModal(key);
+  updateModalAddBtn();
+};
+
+/* ─── Render My Schedule panel ─────────────────────── */
+/* ─── Calendar view constants ─────────────────────── */
+const CAL_SCALE = 2.2; // px per minute
+const CAL_DAY_START = 9 * 60; // 9 AM
+const CAL_DAY_END   = 18 * 60; // 6 PM
+
+let calCurrentDay = 'June 24';
+
+function renderMySchedule() {
+  const days = ['June 23', 'June 24', 'June 25'];
+  // Build day nav
+  const nav = document.getElementById('calDayNav');
+  if (!nav) return;
+  // Find days that have sessions
+  const daysWithSessions = new Set(mySchedule.map(s => s.dayLabel));
+  nav.innerHTML = days.map(d =>
+    `<button class="cal-day-tab ${d === calCurrentDay ? 'active' : ''}" onclick="switchCalDay('${d}')">${d.replace('June ','Jun ')}</button>`
+  ).join('');
+
+  renderCalDay(calCurrentDay);
+}
+
+function switchCalDay(day) {
+  calCurrentDay = day;
+  document.querySelectorAll('.cal-day-tab').forEach(t => t.classList.toggle('active', t.textContent === day.replace('June ','Jun ')));
+  renderCalDay(day);
+}
+
+function renderCalDay(dayLabel) {
+  const body = document.getElementById('calBody');
+  const alertsEl = document.getElementById('calAlerts');
+  if (!body) return;
+
+  const daySessions = mySchedule.filter(s => s.dayLabel === dayLabel);
+
+  if (mySchedule.length === 0) {
+    body.innerHTML = `<div class="cal-empty">📋 No sessions saved yet.<br><span style="font-size:11px">Click any session on the schedule,<br>then "Add to My Schedule."</span></div>`;
+    if (alertsEl) { alertsEl.textContent = ''; alertsEl.classList.remove('visible'); }
+    return;
+  }
+
+  if (daySessions.length === 0) {
+    body.innerHTML = `<div class="cal-empty" style="color:var(--gray-4)">No sessions saved for ${dayLabel}</div>`;
+    if (alertsEl) { alertsEl.textContent = ''; alertsEl.classList.remove('visible'); }
+    return;
+  }
+
+  const conflicts = getConflicts(daySessions);
+  const conflictKeys = new Set(conflicts.flatMap(c => [c.a.key, c.b.key]));
+  const bufferWarns = getBufferWarnings(daySessions);
+  const bufferKeys = new Set(bufferWarns.flatMap(w => [w.from.key, w.to.key]));
+
+  // Alerts bar
+  const alerts = [];
+  if (conflicts.length > 0) alerts.push(`⚠ ${conflicts.length} conflict${conflicts.length > 1 ? 's' : ''}: ${conflicts.map(c => `"${c.a.title.slice(0,25)}…" overlaps "${c.b.title.slice(0,25)}…"`).join('; ')}`);
+  if (bufferWarns.length > 0) alerts.push(`⏱ ${bufferWarns.length} tight transition${bufferWarns.length > 1 ? 's' : ''} (&lt;10 min gap)`);
+  if (alertsEl) {
+    if (alerts.length > 0) {
+      alertsEl.innerHTML = alerts.join('<br>');
+      alertsEl.classList.add('visible');
+    } else {
+      alertsEl.textContent = '';
+      alertsEl.classList.remove('visible');
+    }
+  }
+
+  // Compute time range: earliest start → latest end, padded
+  const starts = daySessions.map(s => toMin(s.start));
+  const ends = daySessions.map(s => toMin(s.end));
+  const minTime = Math.max(CAL_DAY_START, Math.min(...starts) - 30);
+  const maxTime = Math.min(CAL_DAY_END, Math.max(...ends) + 30);
+  const totalMin = maxTime - minTime;
+  const gridH = totalMin * CAL_SCALE;
+
+  // Build hour ticks
+  let timeTicks = '';
+  const startHour = Math.floor(minTime / 60);
+  const endHour = Math.ceil(maxTime / 60);
+  for (let h = startHour; h <= endHour; h++) {
+    const t = (h * 60 - minTime) * CAL_SCALE;
+    if (t < 0 || t > gridH + 2) continue;
+    const lbl = h < 12 ? `${h}am` : h === 12 ? '12pm' : `${h-12}pm`;
+    timeTicks += `<div class="cal-time-tick" style="top:${t}px">${lbl}</div>`;
+  }
+
+  // Half-hour dashed lines
+  let halfLines = '';
+  for (let h = startHour; h <= endHour; h++) {
+    const t = (h * 60 + 30 - minTime) * CAL_SCALE;
+    if (t > 0 && t < gridH) halfLines += `<div style="position:absolute;left:0;right:0;top:${t}px;border-top:1px dashed var(--gray-1);pointer-events:none"></div>`;
+  }
+  // Hour solid lines
+  let hourLines = '';
+  for (let h = startHour; h <= endHour; h++) {
+    const t = (h * 60 - minTime) * CAL_SCALE;
+    if (t >= 0 && t <= gridH) hourLines += `<div style="position:absolute;left:0;right:0;top:${t}px;border-top:1px solid var(--gray-2);pointer-events:none"></div>`;
+  }
+
+  // Session blocks — handle overlaps by column-packing
+  const sorted = [...daySessions].sort((a,b) => toMin(a.start) - toMin(b.start));
+  // Simple column assignment
+  const cols = []; // each col: array of {end}
+  const sessionCols = sorted.map(s => {
+    const sS = toMin(s.start), sE = toMin(s.end);
+    let col = cols.findIndex(c => c.length === 0 || c[c.length-1].end <= sS);
+    if (col === -1) { cols.push([]); col = cols.length - 1; }
+    cols[col].push({ end: sE });
+    return col;
+  });
+  const numCols = Math.max(1, cols.length);
+
+  let sessionBlocks = '';
+  sorted.forEach((s, i) => {
+    const rc = RC[s.room] || { c: '#888', bg: '#f5f5f5' };
+    const t = (toMin(s.start) - minTime) * CAL_SCALE;
+    const h = Math.max(18, (toMin(s.end) - toMin(s.start)) * CAL_SCALE - 2);
+    const col = sessionCols[i];
+    const colW = 100 / numCols;
+    const leftPct = col * colW;
+    const isConflict = conflictKeys.has(s.key);
+    const isBuffer = !isConflict && bufferKeys.has(s.key);
+    const clampLines = h > 45 ? 3 : h > 28 ? 2 : 1;
+    sessionBlocks += `<div class="cal-session ${isConflict ? 'cal-conflict' : isBuffer ? 'cal-buffer' : ''}"
+      style="top:${t + 1}px;height:${h}px;left:calc(${leftPct}% + 5px);width:calc(${colW}% - 10px);background:${rc.bg};border-left-color:${rc.c};cursor:default">
+      ${h > 22 ? `<div class="cal-session-time" style="color:${rc.c}">${s.start}–${s.end}</div>` : ''}
+      <div class="cal-session-title" style="-webkit-line-clamp:${clampLines}">${s.title}</div>
+      <button class="cal-session-remove" onclick="event.stopPropagation();removeFromSchedule('${s.key}')">✕</button>
+    </div>`;
+  });
+
+  body.innerHTML = `
+    <div class="cal-grid" style="height:${gridH + 20}px;margin:10px 0 10px">
+      <div class="cal-time-col" style="height:${gridH + 20}px">${timeTicks}</div>
+      <div class="cal-lane" style="height:${gridH + 20}px">
+        ${hourLines}${halfLines}${sessionBlocks}
+      </div>
+    </div>`;
+}
+
+function removeFromSchedule(key) {
+  mySchedule = mySchedule.filter(x => x.key !== key);
+  saveMySchedule();
+  renderMySchedule();
+}
+
+/* ─── Screen navigation ───────────────────────────── */
+const SCREENS = {
+  agenda:     { screenId: 'screenAgenda',     btnId: 'agendaBtn' },
+  mySchedule: { screenId: 'screenMySchedule', btnId: 'myScheduleBtn' },
+  compare:    { screenId: 'screenCompare',    btnId: 'compareBtn' },
+  recommend:  { screenId: 'screenRecommend',  btnId: 'recBtn' },
+};
+
+let currentScreen = 'agenda';
+
+function showScreen(name) {
+  if (currentScreen === name) return;
+  currentScreen = name;
+
+  // Swap active screen
+  document.querySelectorAll('.app-screen').forEach(el => el.classList.remove('active'));
+  document.getElementById(SCREENS[name].screenId).classList.add('active');
+
+  // Swap active nav btn (sidebar)
+  ['agendaBtn','myScheduleBtn','compareBtn','recBtn'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('active');
+  });
+  document.getElementById(SCREENS[name].btnId).classList.add('active');
+
+  // Swap active mobile nav btn
+  const mobileMap = { agenda: 'mobileAgendaBtn', mySchedule: 'mobileMyScheduleBtn', compare: 'mobileCompareBtn', recommend: 'mobileRecBtn' };
+  ['mobileAgendaBtn','mobileMyScheduleBtn','mobileCompareBtn','mobileRecBtn'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('active');
+  });
+  const mobileBtn = document.getElementById(mobileMap[name]);
+  if (mobileBtn) mobileBtn.classList.add('active');
+
+  // Per-screen init
+  if (name === 'mySchedule') {
+    const days = ['June 24', 'June 25', 'June 23'];
+    const dayWithSessions = days.find(d => mySchedule.some(s => s.dayLabel === d));
+    if (dayWithSessions) calCurrentDay = dayWithSessions;
+    renderMySchedule();
+  } else if (name === 'compare') {
+    updateCompareShareCode();
+  } else if (name === 'recommend') {
+    renderInterestChips();
+    if (document.getElementById('recModePick')?.classList.contains('active')) {
+      renderPickList();
+    }
+  }
+}
+
+// Keep old toggle functions as aliases for any remaining references
+function toggleMySchedule() { showScreen('mySchedule'); }
+function toggleCompare()    { showScreen('compare'); }
+function toggleRecommend()  { showScreen('recommend'); }
+function closeAllPanels()   { showScreen('agenda'); }
+
+function openInlinePanel() {} // no-op, kept for safety
+
+/* ─── Export / Share schedule code ──────────────────── */
+function getShareCode() {
+  const keys = mySchedule.map(x => x.key);
+  return btoa(JSON.stringify(keys));
+}
+
+function exportSchedule() {
+  const code = getShareCode();
+  navigator.clipboard.writeText(code).catch(() => {});
+  const btn = document.getElementById('shareCodeBtn');
+  if (btn) { const orig = btn.innerHTML; btn.innerHTML = '✓ Copied!'; setTimeout(() => { btn.innerHTML = orig; }, 1500); }
+}
+
+function updateCompareShareCode() {
+  const box = document.getElementById('compareCodeBox');
+  if (!box) return;
+  const code = getShareCode();
+  if (mySchedule.length === 0) {
+    box.textContent = 'Add sessions to My Schedule first';
+    box.style.color = 'var(--gray-4)';
+  } else {
+    box.textContent = code.length > 60 ? code.slice(0,58)+'…' : code;
+    box.style.color = 'var(--gray-5)';
+    box.title = code;
+  }
+}
+
+function copyShareCode() {
+  const code = getShareCode();
+  if (!code || mySchedule.length === 0) return;
+  navigator.clipboard.writeText(code).catch(() => {});
+  const box = document.getElementById('compareCodeBox');
+  const orig = box.textContent;
+  box.textContent = '✓ Copied to clipboard!';
+  box.style.color = 'var(--black)';
+  setTimeout(() => { box.textContent = orig; box.style.color = 'var(--gray-5)'; }, 1500);
+}
+
+/* ─── Load a colleague's schedule ────────────────────── */
+function loadColleagueSchedule() {
+  const input = document.getElementById('colleagueCodeInput');
+  if (!input) return;
+  const raw = input.value.trim();
+  if (!raw) return;
+  try {
+    const keys = JSON.parse(atob(raw));
+    colleagueSchedule = keys
+      .map(k => SESSION_MAP[k] ? { ...SESSION_MAP[k], key: k } : null)
+      .filter(Boolean);
+    renderCompareResults();
+  } catch(e) {
+    document.getElementById('compareResults').innerHTML =
+      `<div style="font-size:11px;color:var(--orange);margin-top:8px">⚠ Invalid code. Ask your colleague to copy theirs from the Share button.</div>`;
+  }
+}
+
+function renderCompareResults() {
+  const container = document.getElementById('compareResults');
+  if (!container) return;
+  if (mySchedule.length === 0 || colleagueSchedule.length === 0) {
+    container.innerHTML = '<div style="font-size:11px;color:var(--gray-5);margin-top:8px">Add sessions to both schedules to see comparison.</div>';
+    return;
+  }
+
+  const myKeys   = new Set(mySchedule.map(x => x.key));
+  const themKeys  = new Set(colleagueSchedule.map(x => x.key));
+  const sharedKeys = new Set([...myKeys].filter(k => themKeys.has(k)));
+
+  const overlap  = mySchedule.filter(x => themKeys.has(x.key));
+  const onlyMe   = mySchedule.filter(x => !themKeys.has(x.key));
+  const onlyThem = colleagueSchedule.filter(x => !myKeys.has(x.key));
+
+  // Same-time sessions where you each go to different ones
+  const splitPairs = [];
+  for (const mine of onlyMe) {
+    for (const theirs of onlyThem) {
+      if (mine.dayLabel !== theirs.dayLabel) continue;
+      const mS = toMin(mine.start), mE = toMin(mine.end);
+      const tS = toMin(theirs.start), tE = toMin(theirs.end);
+      if (mS < tE && tS < mE) splitPairs.push({ mine, theirs });
+    }
+  }
+
+  // ── Calendar per day ───────────────────────────────
+  const DAY_SCALE = 2.0;
+  const dayOrder = ['June 24', 'June 25'];
+  let html = '';
+
+  for (const day of dayOrder) {
+    const mySessions   = mySchedule.filter(s => s.dayLabel === day);
+    const themSessions = colleagueSchedule.filter(s => s.dayLabel === day);
+    if (mySessions.length === 0 && themSessions.length === 0) continue;
+
+    const allDay = [...mySessions, ...themSessions];
+    const allTimes = allDay.flatMap(s => [toMin(s.start), toMin(s.end)]);
+    const minT = Math.max(9*60, Math.min(...allTimes) - 20);
+    const maxT = Math.min(18*60, Math.max(...allTimes) + 20);
+    const gridH = (maxT - minT) * DAY_SCALE;
+
+    let timeTicks = '';
+    const startHr = Math.floor(minT / 60), endHr = Math.ceil(maxT / 60);
+    for (let h = startHr; h <= endHr; h++) {
+      const ty = (h * 60 - minT) * DAY_SCALE;
+      if (ty < 0 || ty > gridH + 2) continue;
+      const lbl = h < 12 ? `${h}am` : h === 12 ? '12pm' : `${h-12}pm`;
+      timeTicks += `<div class="compare-time-tick" style="top:${ty}px">${lbl}</div>`;
+    }
+
+    function gridLines() {
+      let out = '';
+      for (let h = startHr; h <= endHr; h++) {
+        const ty = (h * 60 - minT) * DAY_SCALE;
+        out += `<div class="compare-hour-line" style="top:${ty}px"></div>`;
+        const ty2 = (h * 60 + 30 - minT) * DAY_SCALE;
+        if (ty2 < gridH) out += `<div class="compare-half-line" style="top:${ty2}px"></div>`;
+      }
+      return out;
+    }
+
+    function sessionBlocks(sessions) {
+      return sessions.sort((a,b) => toMin(a.start)-toMin(b.start)).map(s => {
+        const rc = RC[s.room] || { c: '#888', bg: '#f5f5f5' };
+        const ty = (toMin(s.start) - minT) * DAY_SCALE + 1;
+        const bh = Math.max(18, (toMin(s.end) - toMin(s.start)) * DAY_SCALE - 2);
+        const isShared = sharedKeys.has(s.key);
+        const clamp = bh > 42 ? 3 : bh > 26 ? 2 : 1;
+        const sharedBadge = isShared ? `<span class="compare-shared-badge">✓ Both</span>` : '';
+        return `<div class="compare-block ${isShared ? 'is-shared' : ''}"
+          style="top:${ty}px;height:${bh}px;background:${rc.bg};border-left-color:${rc.c};cursor:default">
+          ${sharedBadge}
+          ${bh > 22 ? `<div class="compare-block-time" style="color:${rc.c}">${s.start}–${s.end}</div>` : ''}
+          <div class="compare-block-title" style="-webkit-line-clamp:${clamp}">${s.title}</div>
+        </div>`;
+      }).join('');
+    }
+
+    html += `
+    <div class="compare-day-section">
+      <div class="compare-day-label">${day}</div>
+      <div class="compare-col-headers">
+        <div></div>
+        <div class="compare-col-you">You · ${mySessions.length} session${mySessions.length!==1?'s':''}</div>
+        <div class="compare-col-them">Colleague · ${themSessions.length} session${themSessions.length!==1?'s':''}</div>
+      </div>
+      <div class="compare-cal-grid">
+        <div class="compare-time-col" style="height:${gridH+16}px">${timeTicks}</div>
+        <div class="compare-lane" style="height:${gridH+16}px">${gridLines()}<div style="position:relative;height:100%">${sessionBlocks(mySessions)}</div></div>
+        <div class="compare-lane" style="height:${gridH+16}px">${gridLines()}<div style="position:relative;height:100%">${sessionBlocks(themSessions)}</div></div>
+      </div>
+    </div>`;
+  }
+
+  // ── Cover more ground ──────────────────────────────
+  // Group split pairs by day and show as a simple "at this time, you split" list
+  if (splitPairs.length > 0) {
+    // Group by day
+    const pairsByDay = {};
+    for (const p of splitPairs) {
+      const d = p.mine.dayLabel;
+      if (!pairsByDay[d]) pairsByDay[d] = [];
+      pairsByDay[d].push(p);
+    }
+
+    html += `<div class="compare-section-title" style="margin-top:6px">Cover more ground together</div>`;
+    html += `<div style="font-family:var(--font-secondary);font-weight:400;font-size:12px;color:var(--gray-5);line-height:1.5;margin-bottom:10px">These sessions happen at the same time. One of you goes to each — compare notes after.</div>`;
+
+    for (const day of dayOrder) {
+      if (!pairsByDay[day]) continue;
+      // Sort pairs by time
+      const sorted = pairsByDay[day].sort((a,b) => toMin(a.mine.start) - toMin(b.mine.start));
+      html += `<div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--gray-4);margin:8px 0 5px">${day}</div>`;
+      for (const { mine, theirs } of sorted) {
+        const myRc   = RC[mine.room]   || { c: '#888', bg: '#f5f5f5' };
+        const themRc = RC[theirs.room] || { c: '#888', bg: '#f5f5f5' };
+        html += `<div class="compare-split-row">
+          <div class="compare-split-time">${mine.start}</div>
+          <div class="compare-split-sessions">
+            <div class="compare-split-session" style="border-left-color:${myRc.c};background:${myRc.bg};cursor:default">
+              <div class="compare-split-who-label" style="color:${myRc.c}">You attend</div>
+              <div class="compare-split-session-title">${mine.title}</div>
+              <div class="compare-split-session-room" style="color:${myRc.c}">${mine.room}</div>
+            </div>
+            <div class="compare-split-session" style="border-left-color:${themRc.c};background:${themRc.bg};cursor:default">
+              <div class="compare-split-who-label" style="color:${themRc.c}">Colleague attends</div>
+              <div class="compare-split-session-title">${theirs.title}</div>
+              <div class="compare-split-session-room" style="color:${themRc.c}">${theirs.room}</div>
+            </div>
+          </div>
+        </div>`;
+      }
+    }
+  }
+
+  container.innerHTML = html || '<div style="font-size:11px;color:var(--gray-5);margin-top:8px">No sessions to compare.</div>';
+}
+
+/* ─── Recommendations ─────────────────────────────── */
+let recPickDay = 'June 24';
+let recPickedKeys = new Set();
+
+function switchRecTab(mode) {
+  document.getElementById('recTabTopics').classList.toggle('active', mode === 'topics');
+  document.getElementById('recTabPick').classList.toggle('active', mode === 'pick');
+  document.getElementById('recModeTopics').classList.toggle('active', mode === 'topics');
+  document.getElementById('recModePick').classList.toggle('active', mode === 'pick');
+  if (mode === 'pick') renderPickList();
+}
+
+function renderInterestChips() {
+  const grid = document.getElementById('recInterestGrid');
+  if (!grid) return;
+  const allTopics = getAllTopics();
+  grid.innerHTML = allTopics.map(t =>
+    `<button class="rec-interest-chip ${recInterests.has(t) ? 'active' : ''}" onclick="toggleRecInterest(this,'${t.replace(/'/g,"\\'")}')">${t}</button>`
+  ).join('');
+}
+
+function toggleRecInterest(btn, topic) {
+  if (recInterests.has(topic)) {
+    recInterests.delete(topic);
+    btn.classList.remove('active');
+  } else {
+    recInterests.add(topic);
+    btn.classList.add('active');
+  }
+}
+
+/* ─── Pick from Calendar mode ────────────────────── */
+function renderPickList() {
+  // Day tabs
+  const tabsEl = document.getElementById('recPickDayTabs');
+  if (tabsEl) {
+    tabsEl.innerHTML = ['June 24', 'June 25'].map(d =>
+      `<button class="rec-pick-day-tab ${d === recPickDay ? 'active' : ''}" onclick="switchRecPickDay('${d}')">${d}</button>`
+    ).join('');
+  }
+  renderPickSessions();
+  updatePickCount();
+}
+
+function switchRecPickDay(day) {
+  recPickDay = day;
+  recPickExpanded = null;
+  document.querySelectorAll('.rec-pick-day-tab').forEach(t =>
+    t.classList.toggle('active', t.textContent === day));
+  // Reset generated options when switching day
+  const results = document.getElementById('recPickResults');
+  if (results) results.innerHTML = '';
+  renderPickSessions();
+}
+
+let recPickExpanded = null; // key of currently expanded item
+
+function renderPickSessions() {
+  const list = document.getElementById('recPickList');
+  if (!list) return;
+  const dayIdx = DAYS.findIndex(d => d.label === recPickDay);
+  if (dayIdx < 0) return;
+  const sessions = DAYS[dayIdx].sessions
+    .filter(s => s.theme !== 'Event' && s.theme !== 'Deep dive' && s.room !== 'Config Commons')
+    .sort((a,b) => toMin(a.start) - toMin(b.start));
+
+  list.innerHTML = sessions.map(s => {
+    const key = `s_${dayIdx}_${s.room.replace(/\W/g,'_')}_${s.start.replace(/\W/g,'')}`;
+    const rc = RC[s.room] || { c: '#888' };
+    const sel = recPickedKeys.has(key);
+    const isExp = recPickExpanded === key;
+    const desc = s.desc ? s.desc : '';
+    const speakers = (s.speakers||[]).map(sp => sp.split(' · ')[0]).join(', ');
+    return `<div class="rec-pick-item ${sel ? 'selected' : ''} ${isExp ? 'expanded' : ''}" id="pick_${key}">
+      <div class="rec-pick-row" onclick="togglePickExpand('${key}')">
+        <div class="rec-pick-check" onclick="event.stopPropagation();togglePickSessionByKey('${key}')">
+          <div class="rec-pick-check-inner"></div>
+        </div>
+        <div class="rec-pick-info">
+          <div class="rec-pick-time">${s.start} – ${s.end}${speakers ? ' · ' + speakers : ''}</div>
+          <div class="rec-pick-title">${s.title}</div>
+          <div class="rec-pick-room" style="color:${rc.c}">${s.room}</div>
+        </div>
+        <span class="rec-pick-expand-btn">▾</span>
+      </div>
+      ${desc ? `<div class="rec-pick-expanded-body">
+        <div class="rec-pick-desc">${desc}</div>
+        <div class="rec-pick-add-row">
+          <button class="rec-pick-add-btn ${sel ? 'selected' : ''}" onclick="togglePickSessionByKey('${key}')">
+            ${sel
+              ? `✓ Selected <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 3.5-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+              : `Select this session <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 2v6M2 5h6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`
+            }
+          </button>
+        </div>
+      </div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function togglePickExpand(key) {
+  const el = document.getElementById('pick_' + key);
+  if (!el) return;
+  const wasExpanded = el.classList.contains('expanded');
+  // Collapse any previously expanded item
+  if (recPickExpanded && recPickExpanded !== key) {
+    const prev = document.getElementById('pick_' + recPickExpanded);
+    if (prev) prev.classList.remove('expanded');
+  }
+  el.classList.toggle('expanded', !wasExpanded);
+  recPickExpanded = wasExpanded ? null : key;
+}
+
+function togglePickSessionByKey(key) {
+  const el = document.getElementById('pick_' + key);
+  if (!el) return;
+  if (recPickedKeys.has(key)) {
+    recPickedKeys.delete(key);
+    el.classList.remove('selected');
+    const btn = el.querySelector('.rec-pick-add-btn');
+    if (btn) { btn.classList.remove('selected'); btn.innerHTML = 'Select this session <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 2v6M2 5h6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>'; }
+  } else {
+    recPickedKeys.add(key);
+    el.classList.add('selected');
+    const btn = el.querySelector('.rec-pick-add-btn');
+    if (btn) { btn.classList.add('selected'); btn.innerHTML = '✓ Selected <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 3.5-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
+  }
+  updatePickCount();
+}
+
+function togglePickSession(key, el) {
+  togglePickSessionByKey(key);
+}
+
+function updatePickCount() {
+  const el = document.getElementById('recPickCount');
+  if (el) el.textContent = `${recPickedKeys.size} session${recPickedKeys.size !== 1 ? 's' : ''} selected`;
+}
+
+/* ─── Generate scheduling options from picks ─────── */
+function generatePickOptions() {
+  const results = document.getElementById('recPickResults');
+  if (!results) return;
+  if (recPickedKeys.size < 2) {
+    results.innerHTML = '<div style="font-size:11px;color:var(--orange);margin-top:8px">Select at least 2 sessions to generate options.</div>';
+    return;
+  }
+
+  // Collect picked sessions
+  const picked = [...recPickedKeys].map(k => {
+    const s = SESSION_MAP[k];
+    return s ? { ...s, key: k } : null;
+  }).filter(Boolean);
+
+  // Group by day
+  const byDay = {};
+  for (const s of picked) {
+    if (!byDay[s.dayLabel]) byDay[s.dayLabel] = [];
+    byDay[s.dayLabel].push(s);
+  }
+
+  // For each day, generate up to 3 conflict-free subsets using different strategies
+  // Strategy A: Maximize count (greedy earliest-end)
+  // Strategy B: Maximize topic breadth (prefer sessions with different rooms)
+  // Strategy C: Relaxed buffer (only true conflicts avoided, not 10-min buffer)
+  const dayOrder = ['June 23', 'June 24', 'June 25'];
+  const options = [
+    { label: 'Option A — Max sessions', hint: 'Packs in the most sessions, 10 min buffers', sessions: [], bufferMin: 10, sortFn: (a,b) => toMin(a.end) - toMin(b.end) },
+    { label: 'Option B — Spread coverage', hint: 'Diversifies across stages, 10 min buffers', sessions: [], bufferMin: 10, sortFn: (a,b) => (a.room > b.room ? 1 : -1) || toMin(a.start) - toMin(b.start) },
+    { label: 'Option C — Tight schedule', hint: 'More sessions, only avoids true overlaps', sessions: [], bufferMin: 0, sortFn: (a,b) => toMin(a.start) - toMin(b.start) },
+  ];
+
+  for (const opt of options) {
+    for (const day of dayOrder) {
+      if (!byDay[day]) continue;
+      const sorted = [...byDay[day]].sort(opt.sortFn);
+      const chosen = [];
+      for (const s of sorted) {
+        const sS = toMin(s.start), sE = toMin(s.end);
+        const clash = chosen.some(p => {
+          const pS = toMin(p.start), pE = toMin(p.end);
+          return sS < pE + opt.bufferMin && pS < sE + opt.bufferMin;
+        });
+        if (!clash) chosen.push(s);
+      }
+      // Re-sort chosen by start time for display
+      opt.sessions.push(...chosen.sort((a,b) => toMin(a.start) - toMin(b.start)));
+    }
+  }
+
+  if (options.every(o => o.sessions.length === 0)) {
+    results.innerHTML = '<div style="font-size:11px;color:var(--gray-5);margin-top:8px">No valid schedule found. Try selecting sessions from different time slots.</div>';
+    return;
+  }
+
+  let html = '';
+  options.forEach((opt, oi) => {
+    if (opt.sessions.length === 0) return;
+    const conflicts = getConflicts(opt.sessions);
+    const buffers = getBufferWarnings(opt.sessions);
+    const statusBits = [];
+    if (conflicts.length > 0) statusBits.push(`⚠ ${conflicts.length} conflict${conflicts.length > 1 ? 's' : ''}`);
+    if (buffers.length > 0) statusBits.push(`⏱ ${buffers.length} tight gap${buffers.length > 1 ? 's' : ''}`);
+    if (statusBits.length === 0) statusBits.push('✓ Conflict-free');
+
+    const byDayOpt = {};
+    for (const s of opt.sessions) {
+      if (!byDayOpt[s.dayLabel]) byDayOpt[s.dayLabel] = [];
+      byDayOpt[s.dayLabel].push(s);
+    }
+
+    html += `<div class="rec-option-card">
+      <div class="rec-option-header">
+        <div>
+          <div class="rec-option-title">${opt.label}</div>
+          <div class="rec-option-meta">${opt.hint} · ${opt.sessions.length} sessions · ${statusBits.join(' · ')}</div>
+        </div>
+        <button class="rec-option-save-all" onclick="saveOptionToSchedule(${oi})">Save All</button>
+      </div>
+      <div class="rec-option-body" id="recOptBody_${oi}">`;
+
+    for (const day of dayOrder) {
+      if (!byDayOpt[day]) continue;
+      html += `<div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--gray-4);margin:8px 0 4px">${day}</div>`;
+      const dayConflictKeys = new Set(getConflicts(byDayOpt[day]).flatMap(c => [c.a.key, c.b.key]));
+      const dayBufKeys = new Set(getBufferWarnings(byDayOpt[day]).flatMap(w => [w.from.key, w.to.key]));
+      for (const s of byDayOpt[day]) {
+        const rc = RC[s.room] || { c: '#888' };
+        const isConflict = dayConflictKeys.has(s.key);
+        const isBuf = !isConflict && dayBufKeys.has(s.key);
+        html += `<div class="rec-option-session">
+          <div class="rec-option-time">${s.start}<br><span style="color:var(--gray-4)">${s.end}</span></div>
+          <div class="rec-option-text">
+            <div class="rec-option-name">${s.title}</div>
+            <div class="rec-option-room" style="color:${rc.c}">${s.room}</div>
+            ${isConflict ? `<div style="font-size:9px;color:var(--orange)">⚠ Overlaps another session</div>` : ''}
+            ${isBuf ? `<div class="rec-option-warn">⏱ &lt;10 min to next</div>` : ''}
+          </div>
+        </div>`;
+      }
+    }
+
+    html += `</div></div>`;
+  });
+
+  // Store options for save-all
+  window._recPickOptions = options;
+  results.innerHTML = html;
+}
+
+function saveOptionToSchedule(optIdx) {
+  const opt = window._recPickOptions && window._recPickOptions[optIdx];
+  if (!opt) return;
+  for (const s of opt.sessions) {
+    if (!mySchedule.some(x => x.key === s.key)) {
+      mySchedule.push(s);
+    }
+  }
+  saveMySchedule();
+  const btn = document.querySelector(`#recOptBody_${optIdx}`).closest('.rec-option-card').querySelector('.rec-option-save-all');
+  if (btn) { btn.textContent = '✓ Saved!'; btn.style.background = 'var(--orange)'; setTimeout(() => { btn.textContent = 'Save All'; btn.style.background = ''; }, 2000); }
+}
+
+function generateRecommendations() {
+  const results = document.getElementById('recResults');
+  if (!results) return;
+  if (recInterests.size === 0) {
+    results.innerHTML = '<div style="font-size:11px;color:var(--orange);margin-top:8px">Select at least one interest.</div>';
+    return;
+  }
+
+  // Find all relevant sessions (all days)
+  const relevant = [];
+  for (let d = 0; d < DAYS.length; d++) {
+    for (const s of DAYS[d].sessions) {
+      if (s.theme === 'Event' || s.theme === 'Deep dive') continue;
+      if ((s.topics || []).some(t => recInterests.has(t))) {
+        const key = `s_${d}_${s.room.replace(/\W/g,'_')}_${s.start.replace(/\W/g,'')}`;
+        relevant.push({ ...s, key, dayLabel: DAYS[d].label, dayIdx: d });
+      }
+    }
+  }
+
+  // Greedy non-conflicting schedule with ≥10 min buffer
+  const byDay = {};
+  for (const s of relevant) {
+    if (!byDay[s.dayLabel]) byDay[s.dayLabel] = [];
+    byDay[s.dayLabel].push(s);
+  }
+  const recommended = [];
+  const dayOrder = ['June 23', 'June 24', 'June 25'];
+  for (const day of dayOrder) {
+    if (!byDay[day]) continue;
+    const sorted = byDay[day].sort((a, b) => toMin(a.start) - toMin(b.start));
+    const picked = [];
+    for (const s of sorted) {
+      const sStart = toMin(s.start), sEnd = toMin(s.end);
+      const hasConflict = picked.some(p => {
+        const pS = toMin(p.start), pE = toMin(p.end);
+        return sStart < pE + 10 && pS < sEnd + 10; // 10 min buffer
+      });
+      if (!hasConflict) picked.push(s);
+    }
+    recommended.push(...picked);
+  }
+
+  if (recommended.length === 0) {
+    results.innerHTML = '<div style="font-size:11px;color:var(--gray-5);margin-top:8px">No matching sessions found. Try adding more interests.</div>';
+    return;
+  }
+
+  const byDayRec = {};
+  for (const s of recommended) {
+    if (!byDayRec[s.dayLabel]) byDayRec[s.dayLabel] = [];
+    byDayRec[s.dayLabel].push(s);
+  }
+
+  let html = `<div style="font-family:var(--font-secondary);font-size:11px;font-weight:500;color:var(--black);margin-top:42px;margin-bottom:12px">${recommended.length} sessions — all conflict-free with 10+ min buffer</div>`;
+  for (const day of dayOrder) {
+    if (!byDayRec[day]) continue;
+    html += `<div class="rec-day-section"><div class="rec-day-label">${day}</div>`;
+    for (const s of byDayRec[day]) {
+      const rc = RC[s.room] || { c: '#888' };
+      const alreadySaved = mySchedule.some(x => x.key === s.key);
+      html += `<div class="rec-item" style="border-color:${rc.c}">
+        <div class="rec-item-info">
+          <div class="rec-item-time">${s.start} – ${s.end}</div>
+          <div class="rec-item-title">${s.title}</div>
+          <div class="rec-item-room" style="color:${rc.c}">${s.room}</div>
+        </div>
+        <button class="rec-add-btn ${alreadySaved ? 'added' : ''}" onclick="addRecToSchedule('${s.key}', this)">
+          ${alreadySaved ? '✓ Saved' : '+ Save'}
+        </button>
+      </div>`;
+    }
+    html += '</div>';
+  }
+  html += `<button style="font-family:var(--font-secondary);font-size:12px;font-weight:400;background:var(--black);color:var(--white);border:none;border-radius:var(--radius-sm);padding:8px 16px;cursor:pointer;margin-top:4px;transition:background var(--timing-sm)" onmouseover="this.style.background='var(--orange)'" onmouseout="this.style.background='var(--black)'" onclick="saveAllRec()">Save All to My Schedule</button>`;
+  results.innerHTML = html;
+}
+
+function addRecToSchedule(key, btn) {
+  const s = SESSION_MAP[key];
+  if (!s) return;
+  const idx = mySchedule.findIndex(x => x.key === key);
+  if (idx !== -1) {
+    mySchedule.splice(idx, 1);
+    saveMySchedule();
+    btn.textContent = '+ Add';
+    btn.classList.remove('added');
+  } else {
+    mySchedule.push({ ...s, key });
+    saveMySchedule();
+    btn.textContent = '✓ Saved';
+    btn.classList.add('added');
+  }
+  updateBadge();
+  refreshScheduleHighlights();
+}
+
+function saveAllRec() {
+  const allBtns = document.querySelectorAll('#recResults .rec-add-btn');
+  allBtns.forEach(btn => {
+    const onclick = btn.getAttribute('onclick');
+    const match = onclick && onclick.match(/'(s_[^']+)'/);
+    if (match) {
+      const key = match[1];
+      const s = SESSION_MAP[key];
+      if (s && !mySchedule.some(x => x.key === key)) {
+        mySchedule.push({ ...s, key });
+      }
+    }
+    btn.textContent = '✓ Saved';
+    btn.classList.add('added');
+  });
+  saveMySchedule();
+}
+
+/* ─── Export My Schedule as JPG ──────────────────────── */
+function exportScheduleImage() {
+  if (mySchedule.length === 0) {
+    alert('Add some sessions to your schedule first!');
+    return;
+  }
+
+  const btn = document.getElementById('exportImgBtn');
+  if (btn) { btn.textContent = '⏳ Generating…'; btn.disabled = true; }
+
+  // Give the browser a tick to update the button
+  setTimeout(() => {
+    try {
+      _drawScheduleCanvas();
+    } catch(e) {
+      console.error(e);
+      if (btn) { btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v7M3 5l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 9v1.5A.5.5 0 001.5 11h9a.5.5 0 00.5-.5V9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg> Export JPG`; btn.disabled = false; }
+    }
+  }, 30);
+}
+
+function _drawScheduleCanvas() {
+  const btn = document.getElementById('exportImgBtn');
+
+  // ── Config ──────────────────────────────────────────
+  const DAYS_TO_SHOW = ['June 24', 'June 25'].filter(d => mySchedule.some(s => s.dayLabel === d));
+  if (DAYS_TO_SHOW.length === 0) { alert('Add sessions from June 24 or 25.'); return; }
+
+  const PX = 2;           // retina multiplier
+  const COL_W = 340;      // width per day column
+  const TIME_W = 64;      // left time gutter
+  const HEADER_H = 72;    // top title bar
+  const DAY_HEADER_H = 44;
+  const MIN_H = 3.6;      // px per minute (before retina)
+  const CORNER_R = 6;
+  const GUTTER = 10;
+  const SESSION_PAD = 6;
+
+  // Stage colours (opaque versions for canvas)
+  const STAGE_C = {
+    'Main stage':      { line: '#c84239', bg: '#fdf2f1' },
+    'Mezzanine stage': { line: '#7a4ea0', bg: '#f5eefa' },
+    'Level 2 Stage':   { line: '#1f7aab', bg: '#eaf5fc' },
+    'Maker Stage':     { line: '#4a7030', bg: '#f0f4e4' },
+    'Community Stage': { line: '#b06020', bg: '#fef5e8' },
+    'Config Commons':  { line: '#8a7010', bg: '#fefce6' },
+  };
+
+  // ── Time range across all saved sessions ────────────
+  const allTimes = mySchedule.flatMap(s => [toMin(s.start), toMin(s.end)]);
+  const minTime = Math.max(9 * 60, Math.min(...allTimes) - 20);
+  const maxTime = Math.min(18 * 60, Math.max(...allTimes) + 20);
+  const spanMin = maxTime - minTime;
+  const GRID_H = spanMin * MIN_H;
+
+  const TOTAL_W = TIME_W + COL_W * DAYS_TO_SHOW.length + GUTTER * (DAYS_TO_SHOW.length + 1);
+  const TOTAL_H = HEADER_H + DAY_HEADER_H + GRID_H + 24;
+
+  const canvas = document.createElement('canvas');
+  canvas.width  = TOTAL_W * PX;
+  canvas.height = TOTAL_H * PX;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(PX, PX);
+
+  // ── Helpers ──────────────────────────────────────────
+  function roundRect(x, y, w, h, r) {
+    r = Math.min(r, w / 2, h / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y,     x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x,     y + h, r);
+    ctx.arcTo(x,     y + h, x,     y,     r);
+    ctx.arcTo(x,     y,     x + w, y,     r);
+    ctx.closePath();
+  }
+
+  function wrapText(text, x, y, maxW, lineH, maxLines) {
+    const words = text.split(' ');
+    let line = '';
+    let drawn = 0;
+    for (const word of words) {
+      const test = line ? line + ' ' + word : word;
+      if (ctx.measureText(test).width > maxW && line) {
+        ctx.fillText(line, x, y + drawn * lineH);
+        drawn++;
+        if (drawn >= maxLines) { ctx.fillText('…', x, y + (drawn - 1) * lineH); return; }
+        line = word;
+      } else {
+        line = test;
+      }
+    }
+    if (line) ctx.fillText(line, x, y + drawn * lineH);
+  }
+
+  function timeToY(min) {
+    return HEADER_H + DAY_HEADER_H + (min - minTime) * MIN_H;
+  }
+
+  // ── Background ────────────────────────────────────────
+  ctx.fillStyle = '#f9faf4'; // pistachio-20
+  ctx.fillRect(0, 0, TOTAL_W, TOTAL_H);
+
+  // ── Header bar ────────────────────────────────────────
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, TOTAL_W, HEADER_H);
+  ctx.strokeStyle = '#e8e8e8';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(0, HEADER_H); ctx.lineTo(TOTAL_W, HEADER_H); ctx.stroke();
+
+  // Title
+  ctx.fillStyle = '#2c2c2c';
+  ctx.font = `600 ${18}px -apple-system, Helvetica Neue, Arial, sans-serif`;
+  ctx.textBaseline = 'middle';
+  ctx.fillText('Config 2026 — My Schedule', 24, HEADER_H / 2 - 6);
+
+  // Subtitle date
+  ctx.fillStyle = '#6c6c6c';
+  ctx.font = `400 ${11}px -apple-system, Helvetica Neue, Arial, sans-serif`;
+  ctx.fillText('San Francisco · Moscone Center · June 23–25, 2026', 24, HEADER_H / 2 + 12);
+
+  // Session count badge
+  const badgeTxt = `${mySchedule.length} session${mySchedule.length !== 1 ? 's' : ''}`;
+  ctx.font = `500 ${10}px -apple-system, Helvetica Neue, Arial, sans-serif`;
+  const bw = ctx.measureText(badgeTxt).width + 16;
+  roundRect(TOTAL_W - bw - 20, HEADER_H / 2 - 11, bw, 22, 11);
+  ctx.fillStyle = '#c84239';
+  ctx.fill();
+  ctx.fillStyle = '#ffffff';
+  ctx.textAlign = 'center';
+  ctx.fillText(badgeTxt, TOTAL_W - bw / 2 - 20, HEADER_H / 2 + 1);
+  ctx.textAlign = 'left';
+
+  // ── Day columns ───────────────────────────────────────
+  DAYS_TO_SHOW.forEach((dayLabel, di) => {
+    const colX = TIME_W + di * (COL_W + GUTTER) + GUTTER;
+
+    // Day header
+    ctx.fillStyle = '#ffffff';
+    roundRect(colX, HEADER_H + 8, COL_W, DAY_HEADER_H - 10, 8);
+    ctx.fill();
+    ctx.strokeStyle = '#e8e8e8';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    ctx.fillStyle = '#2c2c2c';
+    ctx.font = `500 ${13}px -apple-system, Helvetica Neue, Arial, sans-serif`;
+    ctx.textBaseline = 'middle';
+    ctx.fillText(dayLabel, colX + 12, HEADER_H + DAY_HEADER_H / 2 + 2);
+
+    const daySessions = mySchedule.filter(s => s.dayLabel === dayLabel);
+    ctx.fillStyle = '#6c6c6c';
+    ctx.font = `400 ${10}px -apple-system, Helvetica Neue, Arial, sans-serif`;
+    ctx.fillText(`${daySessions.length} session${daySessions.length !== 1 ? 's' : ''}`, colX + COL_W - 80, HEADER_H + DAY_HEADER_H / 2 + 2);
+
+    // Column background
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(colX, HEADER_H + DAY_HEADER_H, COL_W, GRID_H);
+    ctx.strokeStyle = '#e8e8e8';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(colX, HEADER_H + DAY_HEADER_H, COL_W, GRID_H);
+
+    // Hour lines
+    const startHour = Math.floor(minTime / 60);
+    const endHour = Math.ceil(maxTime / 60);
+    for (let h = startHour; h <= endHour; h++) {
+      const y = timeToY(h * 60);
+      if (y < HEADER_H + DAY_HEADER_H || y > HEADER_H + DAY_HEADER_H + GRID_H) continue;
+      ctx.strokeStyle = '#e8e8e8';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([]);
+      ctx.beginPath(); ctx.moveTo(colX, y); ctx.lineTo(colX + COL_W, y); ctx.stroke();
+      // Half hour
+      const y2 = timeToY(h * 60 + 30);
+      if (y2 < HEADER_H + DAY_HEADER_H + GRID_H) {
+        ctx.strokeStyle = '#f0f0f0';
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath(); ctx.moveTo(colX, y2); ctx.lineTo(colX + COL_W, y2); ctx.stroke();
+        ctx.setLineDash([]);
+      }
+    }
+
+    // Column-pack sessions
+    const sorted = [...daySessions].sort((a,b) => toMin(a.start) - toMin(b.start));
+    const packCols = [];
+    const sessionCol = sorted.map(s => {
+      const sS = toMin(s.start), sE = toMin(s.end);
+      let c = packCols.findIndex(col => col.length === 0 || col[col.length-1] <= sS);
+      if (c === -1) { packCols.push([]); c = packCols.length - 1; }
+      packCols[c].push(sE);
+      return c;
+    });
+    const nCols = Math.max(1, packCols.length);
+
+    sorted.forEach((s, si) => {
+      const sc = STAGE_C[s.room] || { line: '#888', bg: '#f7f7f7' };
+      const sY = timeToY(toMin(s.start)) + 1;
+      const sH = Math.max(20, (toMin(s.end) - toMin(s.start)) * MIN_H - 2);
+      const subColW = (COL_W - 8) / nCols;
+      const sX = colX + 4 + sessionCol[si] * subColW;
+      const sW = subColW - 4;
+
+      // Card background
+      roundRect(sX, sY, sW, sH, CORNER_R);
+      ctx.fillStyle = sc.bg;
+      ctx.fill();
+
+      // Left accent bar
+      roundRect(sX, sY, 4, sH, 2);
+      ctx.fillStyle = sc.line;
+      ctx.fill();
+
+      // Card border
+      roundRect(sX, sY, sW, sH, CORNER_R);
+      ctx.strokeStyle = sc.line + '40'; // 25% opacity
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      // Time label
+      if (sH > 22) {
+        ctx.fillStyle = sc.line;
+        ctx.font = `500 ${8.5}px -apple-system, Helvetica Neue, Arial, sans-serif`;
+        ctx.textBaseline = 'top';
+        ctx.fillText(`${s.start} – ${s.end}`, sX + SESSION_PAD + 2, sY + 5);
+      }
+
+      // Title
+      const titleY = sH > 22 ? sY + 16 : sY + 4;
+      const maxTitleLines = sH > 60 ? 3 : sH > 36 ? 2 : 1;
+      ctx.fillStyle = '#2c2c2c';
+      ctx.font = `500 ${10}px -apple-system, Helvetica Neue, Arial, sans-serif`;
+      ctx.textBaseline = 'top';
+      wrapText(s.title, sX + SESSION_PAD + 2, titleY, sW - SESSION_PAD * 2 - 4, 13, maxTitleLines);
+
+      // Room label at bottom if space
+      if (sH > 52) {
+        ctx.fillStyle = sc.line;
+        ctx.font = `400 ${8}px -apple-system, Helvetica Neue, Arial, sans-serif`;
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(s.room, sX + SESSION_PAD + 2, sY + sH - 4);
+      }
+    });
+  });
+
+  // ── Time column ────────────────────────────────────────
+  const startHour = Math.floor(minTime / 60);
+  const endHour = Math.ceil(maxTime / 60);
+  for (let h = startHour; h <= endHour; h++) {
+    const y = timeToY(h * 60);
+    if (y < HEADER_H + DAY_HEADER_H - 5 || y > TOTAL_H - 4) continue;
+    const lbl = h < 12 ? `${h}am` : h === 12 ? '12pm' : `${h-12}pm`;
+    ctx.fillStyle = h % 2 === 0 ? '#6c6c6c' : '#c2c2c2';
+    ctx.font = `${h % 2 === 0 ? 500 : 400} ${9}px -apple-system, Helvetica Neue, Arial, sans-serif`;
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'right';
+    ctx.fillText(lbl.toUpperCase(), TIME_W - 8, y);
+  }
+  ctx.textAlign = 'left';
+
+  // ── Legend row at bottom ────────────────────────────────
+  const legendY = TOTAL_H - 20;
+  const stages = [...new Set(mySchedule.map(s => s.room))].filter(r => STAGE_C[r]);
+  let lx = TIME_W + GUTTER;
+  ctx.font = `400 ${8.5}px -apple-system, Helvetica Neue, Arial, sans-serif`;
+  ctx.textBaseline = 'middle';
+  for (const room of stages) {
+    const sc = STAGE_C[room];
+    roundRect(lx, legendY - 4, 10, 10, 2);
+    ctx.fillStyle = sc.line;
+    ctx.fill();
+    ctx.fillStyle = '#6c6c6c';
+    const shortName = room.replace(' Stage', '').replace(' stage', '').replace('Config ', '');
+    ctx.fillText(shortName, lx + 13, legendY + 1);
+    lx += ctx.measureText(shortName).width + 26;
+    if (lx > TOTAL_W - 100) break;
+  }
+
+  // ── Watermark ────────────────────────────────────────────
+  ctx.fillStyle = '#c2c2c2';
+  ctx.font = `400 ${9}px -apple-system, Helvetica Neue, Arial, sans-serif`;
+  ctx.textAlign = 'right';
+  ctx.fillText('config.figma.com', TOTAL_W - 16, legendY + 1);
+  ctx.textAlign = 'left';
+
+  // ── Download ─────────────────────────────────────────────
+  canvas.toBlob(blob => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'config2026-my-schedule.jpg';
+    a.click();
+    URL.revokeObjectURL(url);
+    if (btn) {
+      btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Saved!`;
+      setTimeout(() => {
+        btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v7M3 5l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 9v1.5A.5.5 0 001.5 11h9a.5.5 0 00.5-.5V9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg> Export JPG`;
+        btn.disabled = false;
+      }, 2000);
+    }
+  }, 'image/jpeg', 0.95);
+}
+
+/* ─── Init ───────────────────────────────────────────── */
+
+// Pre-populate SESSION_MAP for ALL days upfront so picks/recommendations
+// work even for days that haven't been rendered in the grid yet.
+(function populateAllSessions() {
+  for (let d = 0; d < DAYS.length; d++) {
+    const day = DAYS[d];
+    for (const s of day.sessions) {
+      const key = `s_${d}_${s.room.replace(/\W/g,'_')}_${s.start.replace(/\W/g,'')}`;
+      if (!SESSION_MAP[key]) SESSION_MAP[key] = { ...s, dayLabel: day.label };
+    }
+  }
+})();
+
+updateBadge();
+// Refresh highlights when day changes
+const _origShowDay = showDay;
+showDay = function(idx) {
+  _origShowDay(idx);
+  setTimeout(refreshScheduleHighlights, 50);
+};
+setTimeout(refreshScheduleHighlights, 100);
+
+/* ─── Tab switching ─────────────────────────────────────── */
+function showDay(idx) {
+  document.querySelectorAll('.day-tab').forEach((el, i) => el.classList.toggle('active', i === idx));
+  const outer = document.getElementById('scheduleOuter');
+  const tmp   = document.createElement('div');
+  tmp.innerHTML = buildDayHTML(idx);
+  outer.innerHTML = '';
+  outer.appendChild(tmp.firstElementChild);
+  applyTopicFilter();
+}
+
+/* ─── Topic filter logic ────────────────────────────────── */
+const activeTopics = new Set();
+
+buildFilterUI();
+showDay(1); /* Default: June 24 */
+
+function getAllTopics() {
+  const topics = new Set();
+  for (const day of DAYS) {
+    for (const s of day.sessions) {
+      for (const t of (s.topics || [])) topics.add(t);
+    }
+  }
+  // Sort alphabetically but put common ones first
+  return [...topics].sort((a, b) => a.localeCompare(b));
+}
+
+function buildFilterUI() {
+  const chips = document.getElementById('topicChips');
+  if (!chips) return;
+  const topics = getAllTopics();
+  chips.innerHTML = topics.map(t =>
+    `<button class="topic-chip" onclick="toggleTopic(this, '${t.replace(/'/g, "\'")}')" data-topic="${t}">${t}</button>`
+  ).join('');
+}
+
+function toggleTopic(btn, topic) {
+  if (activeTopics.has(topic)) {
+    activeTopics.delete(topic);
+    btn.classList.remove('active');
+  } else {
+    activeTopics.add(topic);
+    btn.classList.add('active');
+  }
+  const clearBtn = document.getElementById('filterClear');
+  if (clearBtn) clearBtn.classList.toggle('visible', activeTopics.size > 0);
+  applyTopicFilter();
+}
+
+function clearTopicFilters() {
+  activeTopics.clear();
+  document.querySelectorAll('.topic-chip').forEach(el => el.classList.remove('active'));
+  const clearBtn = document.getElementById('filterClear');
+  if (clearBtn) clearBtn.classList.remove('visible');
+  const countEl = document.getElementById('filterMatchCount');
+  if (countEl) countEl.textContent = '';
+  document.querySelectorAll('.session, .keynote-span').forEach(el => {
+    el.classList.remove('filtered-out');
+  });
+}
+
+function applyTopicFilter() {
+  const cards = document.querySelectorAll('.session, .keynote-span');
+  if (activeTopics.size === 0) {
+    cards.forEach(el => el.classList.remove('filtered-out'));
+    const countEl = document.getElementById('filterMatchCount');
+    if (countEl) countEl.textContent = '';
+    return;
+  }
+  let visible = 0;
+  cards.forEach(el => {
+    const topicsAttr = el.dataset.topics || '';
+    const cardTopics = topicsAttr ? topicsAttr.split(',') : [];
+    const matches = cardTopics.some(t => activeTopics.has(t));
+    el.classList.toggle('filtered-out', !matches);
+    if (matches) visible++;
+  });
+  const countEl = document.getElementById('filterMatchCount');
+  if (countEl) {
+    countEl.textContent = visible === 0
+      ? 'No matches'
+      : `${visible} session${visible === 1 ? '' : 's'} match`;
+  }
+}
+
+/* ─── Mobile: header height var + touch swipe to close panels ─── */
+function updateMobileHeaderHeight() {
+  // No-op in new screen layout — screens are 100vh flex columns
+}
+
+const isMobile = () => window.innerWidth <= 768;
+
+window.addEventListener('resize', () => {
+  if (isMobile()) updateMobileHeaderHeight();
+});
+document.addEventListener('DOMContentLoaded', () => {
+  if (isMobile()) updateMobileHeaderHeight();
+});
+// Also run after showDay renders
+const __origShowDay2 = showDay;
+showDay = function(idx) {
+  __origShowDay2(idx);
+  if (isMobile()) setTimeout(updateMobileHeaderHeight, 30);
+};
+
+/* ─── Touch swipe-down to close panels on mobile ──────────── */
+(function addSwipeClose() {
+  let touchStartY = 0;
+  document.addEventListener('touchstart', e => {
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+})();
+
+if (isMobile()) updateMobileHeaderHeight();
+
+
+</script>
+</div><!-- /.app-main -->
+
+<!-- ─── MOBILE BOTTOM NAV ────────────────────────────── -->
+<nav class="mobile-nav" id="mobileNav">
+  <button class="mobile-nav-btn active" id="mobileAgendaBtn" onclick="showScreen('agenda')">
+    <svg width="16" height="16" viewBox="0 0 13 13" fill="none"><rect x="1" y="2" width="11" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4 1v2M9 1v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M1 5h11" stroke="currentColor" stroke-width="1.3"/></svg>
+    Agenda
+  </button>
+  <button class="mobile-nav-btn" id="mobileMyScheduleBtn" onclick="showScreen('mySchedule')">
+    <svg width="16" height="16" viewBox="0 0 13 13" fill="none"><rect x="1" y="1" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M4 6.5h5M4 4.5h5M4 8.5h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    <span class="mobile-nav-badge" id="mobileScheduleCount">0</span>
+    Schedule
+  </button>
+  <button class="mobile-nav-btn" id="mobileCompareBtn" onclick="showScreen('compare')">
+    <svg width="16" height="16" viewBox="0 0 13 13" fill="none"><circle cx="4" cy="4" r="2.5" stroke="currentColor" stroke-width="1.3"/><circle cx="9" cy="9" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M6.5 4H9a2.5 2.5 0 012.5 2.5v0" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M6.5 9H4A2.5 2.5 0 011.5 6.5v0" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    Compare
+  </button>
+  <button class="mobile-nav-btn" id="mobileRecBtn" onclick="showScreen('recommend')">
+    <svg width="16" height="16" viewBox="0 0 13 13" fill="none"><path d="M6.5 1.5l1.2 2.4 2.7.4-1.95 1.9.46 2.7L6.5 7.6l-2.41 1.3.46-2.7L2.6 4.3l2.7-.4z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M6.5 10v1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    Build
+  </button>
+</nav>
+</body>
+</html>
